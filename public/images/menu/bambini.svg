@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Shadow -->
+  <ellipse cx="100" cy="168" rx="58" ry="7" fill="rgba(0,0,0,0.22)"/>
+  <!-- Plate -->
+  <circle cx="100" cy="130" r="58" fill="#e8e0d0"/>
+  <circle cx="100" cy="128" r="58" fill="#f5f0e8"/>
+  <circle cx="100" cy="128" r="50" fill="#ece4d8"/>
+  <!-- Pizza on plate -->
+  <!-- Crust -->
+  <circle cx="100" cy="118" r="46" fill="#d4a050"/>
+  <circle cx="100" cy="116" r="46" fill="#e0aa58"/>
+  <!-- Crust dots texture -->
+  <circle cx="66" cy="84" r="2.5" fill="#c89040" opacity="0.6"/>
+  <circle cx="82" cy="74" r="2" fill="#c89040" opacity="0.5"/>
+  <circle cx="100" cy="70" r="2.5" fill="#c89040" opacity="0.6"/>
+  <circle cx="118" cy="74" r="2" fill="#c89040" opacity="0.5"/>
+  <circle cx="134" cy="84" r="2.5" fill="#c89040" opacity="0.6"/>
+  <circle cx="140" cy="100" r="2" fill="#c89040" opacity="0.5"/>
+  <!-- Tomato sauce -->
+  <circle cx="100" cy="116" r="38" fill="#c83020"/>
+  <!-- Cheese -->
+  <circle cx="100" cy="116" r="38" fill="#f8e870" opacity="0.85"/>
+  <!-- Sauce blobs -->
+  <circle cx="88" cy="108" r="10" fill="#d03820" opacity="0.6"/>
+  <circle cx="112" cy="112" r="9" fill="#c82818" opacity="0.55"/>
+  <circle cx="100" cy="126" r="10" fill="#d03820" opacity="0.6"/>
+  <!-- Mozzarella -->
+  <ellipse cx="98" cy="104" rx="10" ry="7" fill="#faf4e0" opacity="0.92"/>
+  <ellipse cx="114" cy="118" rx="9" ry="6" fill="#faf4e0" opacity="0.9"/>
+  <ellipse cx="84" cy="122" rx="9" ry="6" fill="#faf4e0" opacity="0.9"/>
+  <!-- Olive face eyes (smiley) -->
+  <!-- Left eye - olive -->
+  <circle cx="90" cy="108" r="5.5" fill="#2a4018"/>
+  <circle cx="90" cy="107" r="5.5" fill="#3a5828"/>
+  <circle cx="90" cy="107" r="3" fill="#1a2e10"/>
+  <circle cx="88.5" cy="105.5" r="1.2" fill="rgba(255,255,255,0.5)"/>
+  <!-- Right eye - olive -->
+  <circle cx="110" cy="108" r="5.5" fill="#2a4018"/>
+  <circle cx="110" cy="107" r="5.5" fill="#3a5828"/>
+  <circle cx="110" cy="107" r="3" fill="#1a2e10"/>
+  <circle cx="108.5" cy="105.5" r="1.2" fill="rgba(255,255,255,0.5)"/>
+  <!-- Smile - curved pepperoni -->
+  <path d="M 88 122 Q 100 132 112 122" fill="none" stroke="#8b1a1a" stroke-width="4" stroke-linecap="round"/>
+  <!-- Cheek tomatoes -->
+  <circle cx="82" cy="118" r="5" fill="#e83030" opacity="0.7"/>
+  <circle cx="118" cy="118" r="5" fill="#e83030" opacity="0.7"/>
+  <!-- Chef hat (small, above pizza) -->
+  <rect x="88" y="58" width="24" height="16" rx="4" fill="#f5f0e8"/>
+  <ellipse cx="100" cy="58" rx="18" ry="10" fill="#f5f0e8"/>
+  <ellipse cx="100" cy="58" rx="18" ry="10" fill="none" stroke="#e0d8c8" stroke-width="1.5"/>
+  <rect x="88" y="68" width="24" height="4" rx="0" fill="#e0d8c8"/>
+  <!-- Hat puff top -->
+  <circle cx="94" cy="52" r="7" fill="#f5f0e8"/>
+  <circle cx="100" cy="49" r="8" fill="#f5f0e8"/>
+  <circle cx="106" cy="52" r="7" fill="#f5f0e8"/>
+  <!-- Hat band -->
+  <rect x="88" y="64" width="24" height="5" rx="1" fill="#e8411a" opacity="0.8"/>
+  <!-- Stars decoration -->
+  <text x="62" y="82" font-size="14" fill="#c9a84c" opacity="0.9">★</text>
+  <text x="128" y="82" font-size="14" fill="#c9a84c" opacity="0.9">★</text>
+  <text x="95" y="175" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="11" font-weight="900" fill="#c9a84c" letter-spacing="1">BAMBINI</text>
+</svg>

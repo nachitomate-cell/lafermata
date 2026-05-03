@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Pizza base (gluten free) -->
+  <ellipse cx="100" cy="106" rx="80" ry="8" fill="rgba(0,0,0,0.2)"/>
+  <circle cx="100" cy="96" r="72" fill="#d4a85c"/>
+  <circle cx="100" cy="96" r="72" fill="none" stroke="#b88c3c" stroke-width="3" stroke-dasharray="7,5"/>
+  <circle cx="100" cy="96" r="62" fill="#e8c870"/>
+  <circle cx="100" cy="96" r="56" fill="#c8341a" opacity="0.8"/>
+  <circle cx="100" cy="96" r="56" fill="#e8d888" opacity="0.75"/>
+  <!-- Mozzarella blobs -->
+  <ellipse cx="88" cy="84" rx="12" ry="8" fill="#faf4e0" opacity="0.9"/>
+  <ellipse cx="112" cy="90" rx="10" ry="7" fill="#faf4e0" opacity="0.88"/>
+  <ellipse cx="96" cy="108" rx="11" ry="7.5" fill="#faf4e0" opacity="0.9"/>
+  <!-- Basil -->
+  <ellipse cx="106" cy="80" rx="8" ry="5" fill="#349040" transform="rotate(-20,106,80)"/>
+  <ellipse cx="82" cy="104" rx="7" ry="4" fill="#3a9848" transform="rotate(15,82,104)"/>
+  <!-- Crust highlight -->
+  <path d="M 42 68 Q 62 34 100 24 Q 138 14 158 44" fill="none" stroke="rgba(255,220,140,0.4)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- GF badge circle -->
+  <circle cx="100" cy="96" r="38" fill="rgba(12,11,9,0.0)"/>
+
+  <!-- Red prohibition circle over wheat -->
+  <circle cx="136" cy="54" r="26" fill="#f5f0e8"/>
+  <circle cx="136" cy="54" r="26" fill="none" stroke="#e8411a" stroke-width="4"/>
+
+  <!-- Wheat stalk inside (to cross out) -->
+  <line x1="136" y1="36" x2="136" y2="72" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
+  <!-- Wheat grains left -->
+  <ellipse cx="128" cy="44" rx="6" ry="4" fill="#c9a84c" transform="rotate(-30,128,44)"/>
+  <ellipse cx="126" cy="52" rx="6" ry="4" fill="#c9a84c" transform="rotate(-20,126,52)"/>
+  <ellipse cx="128" cy="60" rx="6" ry="4" fill="#c9a84c" transform="rotate(-30,128,60)"/>
+  <!-- Wheat grains right -->
+  <ellipse cx="144" cy="44" rx="6" ry="4" fill="#c9a84c" transform="rotate(30,144,44)"/>
+  <ellipse cx="146" cy="52" rx="6" ry="4" fill="#c9a84c" transform="rotate(20,146,52)"/>
+  <ellipse cx="144" cy="60" rx="6" ry="4" fill="#c9a84c" transform="rotate(30,144,60)"/>
+  <!-- Wheat top -->
+  <ellipse cx="136" cy="38" rx="5" ry="7" fill="#c9a84c"/>
+
+  <!-- Red diagonal slash -->
+  <line x1="116" y1="74" x2="156" y2="34" stroke="#e8411a" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- GF text -->
+  <text x="100" y="150" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="13" font-weight="900" fill="#e8411a" letter-spacing="1">SIN GLUTEN</text>
+</svg>

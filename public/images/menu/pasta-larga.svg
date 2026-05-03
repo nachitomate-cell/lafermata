@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Bowl shadow -->
+  <ellipse cx="100" cy="168" rx="64" ry="8" fill="rgba(0,0,0,0.25)"/>
+  <!-- Bowl outer -->
+  <path d="M 30 90 Q 28 160 100 168 Q 172 160 170 90 Z" fill="#e8e0d0"/>
+  <!-- Bowl inner -->
+  <path d="M 38 90 Q 36 155 100 162 Q 164 155 162 90 Z" fill="#f5f0e8"/>
+  <!-- Rim -->
+  <ellipse cx="100" cy="90" rx="70" ry="14" fill="#e8e0d0"/>
+  <ellipse cx="100" cy="90" rx="62" ry="10" fill="#f5f0e8"/>
+  <ellipse cx="100" cy="89" rx="62" ry="10" fill="none" stroke="#d8d0c0" stroke-width="1.5"/>
+
+  <!-- Pasta nest (spaghetti) -->
+  <!-- Back strands -->
+  <path d="M 55 88 Q 70 120 68 148" fill="none" stroke="#f0d070" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 145 88 Q 130 115 132 148" fill="none" stroke="#f0d070" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <path d="M 65 86 Q 85 130 80 155" fill="none" stroke="#e8c858" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+  <path d="M 135 86 Q 115 125 120 152" fill="none" stroke="#e8c858" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Sauce blob (back) -->
+  <ellipse cx="100" cy="118" rx="38" ry="22" fill="#c0341a" opacity="0.85"/>
+
+  <!-- Middle pasta strands -->
+  <path d="M 72 86 Q 60 110 75 145" fill="none" stroke="#f8d860" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 80 85 Q 72 118 82 150" fill="none" stroke="#f0cc50" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 90 84 Q 88 122 90 152" fill="none" stroke="#f8d860" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 100 84 Q 104 120 100 152" fill="none" stroke="#f0cc50" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 110 84 Q 112 118 110 152" fill="none" stroke="#f8d860" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 120 85 Q 128 116 118 150" fill="none" stroke="#f0cc50" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 128 86 Q 140 108 125 145" fill="none" stroke="#f8d860" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Sauce splash on top -->
+  <ellipse cx="96" cy="108" rx="30" ry="16" fill="#d4401e" opacity="0.9"/>
+  <circle cx="88" cy="105" r="8" fill="#c8341a" opacity="0.8"/>
+  <circle cx="108" cy="110" r="7" fill="#d44020" opacity="0.75"/>
+
+  <!-- Front pasta strands (over sauce) -->
+  <path d="M 76 86 Q 65 108 78 138" fill="none" stroke="#f8e070" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 95 84 Q 92 112 94 142" fill="none" stroke="#f8d860" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 115 85 Q 120 110 114 140" fill="none" stroke="#f8e070" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Basil leaf -->
+  <ellipse cx="105" cy="102" rx="10" ry="6" fill="#2a7030" transform="rotate(-25,105,102)"/>
+  <ellipse cx="104" cy="101" rx="10" ry="6" fill="#349040" transform="rotate(-25,104,101)"/>
+  <line x1="100" y1="104" x2="112" y2="99" stroke="#1e5828" stroke-width="1" opacity="0.8"/>
+  <!-- Basil 2 -->
+  <ellipse cx="88" cy="100" rx="8" ry="5" fill="#349040" transform="rotate(15,88,100)"/>
+  <line x1="85" y1="103" x2="94" y2="97" stroke="#1e5828" stroke-width="1" opacity="0.7"/>
+
+  <!-- Parmigiano shavings -->
+  <ellipse cx="100" cy="95" rx="6" ry="3" fill="#f8f0d8" opacity="0.9" transform="rotate(-10,100,95)"/>
+  <ellipse cx="112" cy="98" rx="5" ry="2.5" fill="#f0e8d0" opacity="0.85" transform="rotate(20,112,98)"/>
+  <ellipse cx="86" cy="97" rx="4" ry="2" fill="#f8f0d8" opacity="0.8" transform="rotate(-5,86,97)"/>
+
+  <!-- Bowl highlight -->
+  <ellipse cx="72" cy="89" rx="16" ry="5" fill="rgba(255,255,255,0.3)" transform="rotate(-10,72,89)"/>
+</svg>

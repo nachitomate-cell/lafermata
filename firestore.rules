@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    function userDoc() {
+      return /databases/$(database)/documents/fermata_usuarios/$(request.auth.uid);
+    }
+    function isStaff() {
+      return isSignedIn() && exists(userDoc()) && get(userDoc()).data.rol == "staff";
+    }
+
+    // ── Usuarios del Club ──────────────────────────────────────────────────────
+    match /fermata_usuarios/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isStaff();
+      // Auto-registro: solo el propio usuario, sin poderse asignar rol staff
+      allow create: if isOwner(userId)
+        && request.resource.data.rol == "cliente"
+        && request.resource.data.sellos == 1;
+      // El dueño puede actualizar su perfil; staff puede actualizar cualquier campo
+      allow update: if isOwner(userId) || isStaff();
+      allow delete: if isStaff();
+    }
+
+    // ── Premios (catálogo) ─────────────────────────────────────────────────────
+    match /fermata_premios/{premioId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isStaff();
+    }
+
+    // ── Canjes ────────────────────────────────────────────────────────────────
+    match /fermata_canjes/{canjeId} {
+      // El cliente crea su propio canje
+      allow create: if isSignedIn()
+        && request.resource.data.clienteId == request.auth.uid;
+      // El cliente lee los suyos; staff lee todos
+      allow read: if isSignedIn() && (
+        resource.data.clienteId == request.auth.uid || isStaff()
+      );
+      // Solo staff puede marcar como usado
+      allow update: if isStaff();
+      allow delete: if isStaff();
+    }
+
+    // ── Pending Stamps (Handshake Digital) ────────────────────────────────────
+    match /fermata_pending_stamps/{stampId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isStaff()
+      );
+      allow create: if isSignedIn();
+      // Staff confirma o rechaza; cliente puede cancelar la suya
+      allow update: if isStaff() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow delete: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isStaff()
+      );
+    }
+
+    // ── Logs del sistema (inmutables) ──────────────────────────────────────────
+    match /fermata_logs/{logId} {
+      allow read: if isStaff();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+  }
+}

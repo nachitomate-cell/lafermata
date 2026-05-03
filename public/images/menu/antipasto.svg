@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Board shadow -->
+  <ellipse cx="100" cy="164" rx="72" ry="7" fill="rgba(0,0,0,0.22)"/>
+  <!-- Wooden board -->
+  <rect x="28" y="52" width="144" height="106" rx="14" fill="#b8864e"/>
+  <rect x="28" y="52" width="144" height="106" rx="14" fill="url(#wood)" opacity="0.4"/>
+  <!-- Wood grain lines -->
+  <line x1="40" y1="62" x2="40" y2="148" stroke="#a07040" stroke-width="1.5" opacity="0.5"/>
+  <line x1="60" y1="58" x2="60" y2="152" stroke="#a07040" stroke-width="1" opacity="0.4"/>
+  <line x1="80" y1="56" x2="80" y2="153" stroke="#c09060" stroke-width="1" opacity="0.3"/>
+  <line x1="120" y1="56" x2="120" y2="153" stroke="#a07040" stroke-width="1" opacity="0.35"/>
+  <line x1="145" y1="58" x2="145" y2="152" stroke="#a07040" stroke-width="1" opacity="0.4"/>
+  <line x1="165" y1="62" x2="165" y2="148" stroke="#c09060" stroke-width="1" opacity="0.3"/>
+  <!-- Board edge highlight -->
+  <rect x="28" y="52" width="144" height="106" rx="14" fill="none" stroke="#d4a060" stroke-width="2" opacity="0.5"/>
+  <!-- Handle hole -->
+  <rect x="148" y="95" width="24" height="16" rx="8" fill="#9a6830" opacity="0.8"/>
+  <rect x="150" y="97" width="20" height="12" rx="6" fill="#7a5020"/>
+
+  <!-- Salami slices group -->
+  <!-- Salami 1 (back) -->
+  <ellipse cx="68" cy="115" rx="22" ry="20" fill="#8b2020"/>
+  <ellipse cx="68" cy="113" rx="22" ry="20" fill="#a02828"/>
+  <ellipse cx="68" cy="113" rx="19" ry="17" fill="#b83030"/>
+  <circle cx="62" cy="108" r="3" fill="#8b2020"/>
+  <circle cx="74" cy="116" r="2.5" fill="#8b2020"/>
+  <circle cx="65" cy="120" r="2.8" fill="#8b2020"/>
+  <circle cx="76" cy="107" r="2" fill="#8b2020"/>
+  <!-- Salami fat streaks -->
+  <ellipse cx="70" cy="110" rx="4" ry="2" fill="#e8c8a8" opacity="0.6" transform="rotate(-20,70,110)"/>
+  <ellipse cx="62" cy="118" rx="3" ry="1.5" fill="#e8c8a8" opacity="0.5" transform="rotate(10,62,118)"/>
+
+  <!-- Salami 2 -->
+  <ellipse cx="88" cy="108" rx="22" ry="20" fill="#8b2020"/>
+  <ellipse cx="88" cy="106" rx="22" ry="20" fill="#a02828"/>
+  <ellipse cx="88" cy="106" rx="19" ry="17" fill="#b83030"/>
+  <circle cx="82" cy="101" r="3" fill="#8b2020"/>
+  <circle cx="94" cy="109" r="2.5" fill="#8b2020"/>
+  <circle cx="85" cy="113" r="2.8" fill="#8b2020"/>
+  <ellipse cx="90" cy="103" rx="4" ry="2" fill="#e8c8a8" opacity="0.6" transform="rotate(-15,90,103)"/>
+
+  <!-- Prosciutto fold -->
+  <path d="M 110 90 Q 130 80 145 92 Q 148 105 138 112 Q 122 118 108 108 Z" fill="#e8a080"/>
+  <path d="M 112 92 Q 128 84 142 94 Q 145 104 136 110 Q 122 115 110 106 Z" fill="#f0b090"/>
+  <path d="M 116 88 Q 135 82 140 96" fill="none" stroke="#d88868" stroke-width="1.5" opacity="0.7"/>
+  <path d="M 112 100 Q 130 98 138 106" fill="none" stroke="#d88868" stroke-width="1" opacity="0.5"/>
+
+  <!-- Olives -->
+  <ellipse cx="56" cy="90" rx="9" ry="7" fill="#3a5a20"/>
+  <ellipse cx="56" cy="89" rx="9" ry="7" fill="#4a7228"/>
+  <ellipse cx="56" cy="89" rx="5" ry="4" fill="#2a4418"/>
+  <circle cx="56" cy="89" r="2" fill="#e8c840"/><!-- pimento -->
+
+  <ellipse cx="74" cy="80" rx="8" ry="6" fill="#3a5a20"/>
+  <ellipse cx="74" cy="79" rx="8" ry="6" fill="#4a7228"/>
+  <ellipse cx="74" cy="79" rx="4.5" ry="3.5" fill="#2a4418"/>
+  <circle cx="74" cy="79" r="1.8" fill="#e8c840"/>
+
+  <!-- Bread slice -->
+  <rect x="118" y="120" width="38" height="26" rx="4" fill="#d4a84c"/>
+  <rect x="118" y="120" width="38" height="4" rx="2" fill="#b88830"/>
+  <circle cx="128" cy="132" r="2" fill="#c09040" opacity="0.6"/>
+  <circle cx="138" cy="128" r="1.5" fill="#c09040" opacity="0.5"/>
+  <circle cx="148" cy="134" r="2" fill="#c09040" opacity="0.6"/>
+
+  <!-- Cherry tomato -->
+  <circle cx="100" cy="130" r="9" fill="#d02020"/>
+  <circle cx="100" cy="129" r="9" fill="#e83030"/>
+  <ellipse cx="97" cy="126" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
+  <!-- Stem -->
+  <path d="M 100 121 Q 102 116 105 114" fill="none" stroke="#3a6820" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

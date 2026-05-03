@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Plate shadow -->
+  <ellipse cx="100" cy="106" rx="80" ry="8" fill="rgba(0,0,0,0.25)"/>
+  <!-- Crust outer ring -->
+  <circle cx="100" cy="98" r="76" fill="#c9844c"/>
+  <!-- Crust texture -->
+  <circle cx="100" cy="98" r="76" fill="none" stroke="#b5703a" stroke-width="3" stroke-dasharray="8,6"/>
+  <!-- Tomato sauce base -->
+  <circle cx="100" cy="98" r="66" fill="#c0392b"/>
+  <!-- Cheese layer -->
+  <circle cx="100" cy="98" r="66" fill="#f5d98e" opacity="0.85"/>
+  <!-- Sauce blotches -->
+  <circle cx="82" cy="84" r="14" fill="#c0392b" opacity="0.7"/>
+  <circle cx="118" cy="90" r="11" fill="#c0392b" opacity="0.6"/>
+  <circle cx="96" cy="116" r="13" fill="#c0392b" opacity="0.65"/>
+  <circle cx="112" cy="72" r="9" fill="#c0392b" opacity="0.55"/>
+  <circle cx="76" cy="108" r="10" fill="#c0392b" opacity="0.6"/>
+  <!-- Mozzarella blobs -->
+  <ellipse cx="102" cy="78" rx="13" ry="9" fill="#f9f0d8" opacity="0.92"/>
+  <ellipse cx="82" cy="108" rx="10" ry="7" fill="#f9f0d8" opacity="0.9"/>
+  <ellipse cx="120" cy="106" rx="11" ry="8" fill="#f9f0d8" opacity="0.9"/>
+  <ellipse cx="94" cy="96" rx="8" ry="6" fill="#f9f0d8" opacity="0.88"/>
+  <!-- Pepperoni -->
+  <circle cx="90" cy="84" r="7" fill="#8b1a1a"/>
+  <circle cx="90" cy="84" r="7" fill="none" stroke="#6b1212" stroke-width="1"/>
+  <circle cx="113" cy="78" r="6" fill="#8b1a1a"/>
+  <circle cx="113" cy="78" r="6" fill="none" stroke="#6b1212" stroke-width="1"/>
+  <circle cx="107" cy="110" r="7" fill="#8b1a1a"/>
+  <circle cx="107" cy="110" r="7" fill="none" stroke="#6b1212" stroke-width="1"/>
+  <circle cx="79" cy="96" r="5.5" fill="#8b1a1a"/>
+  <circle cx="120" cy="96" r="5" fill="#8b1a1a"/>
+  <circle cx="96" cy="120" r="6" fill="#8b1a1a"/>
+  <!-- Pepperoni shine -->
+  <circle cx="87" cy="81" r="2" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="110" cy="75" r="1.8" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="104" cy="107" r="2" fill="rgba(255,255,255,0.2)"/>
+  <!-- Basil leaves -->
+  <ellipse cx="95" cy="89" rx="6" ry="4" fill="#2d7a3a" transform="rotate(-30,95,89)"/>
+  <ellipse cx="117" cy="118" rx="6" ry="4" fill="#2d7a3a" transform="rotate(20,117,118)"/>
+  <ellipse cx="76" cy="80" rx="5" ry="3.5" fill="#2d7a3a" transform="rotate(15,76,80)"/>
+  <!-- Basil shine -->
+  <ellipse cx="94" cy="88" rx="2.5" ry="1.5" fill="#3d9a4a" opacity="0.7" transform="rotate(-30,94,88)"/>
+  <!-- Crust highlight -->
+  <path d="M 40 70 Q 60 36 100 26 Q 140 16 160 46" fill="none" stroke="rgba(255,220,160,0.4)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Oregano sprinkle -->
+  <circle cx="86" cy="72" r="1.5" fill="#6b8e23" opacity="0.8"/>
+  <circle cx="125" cy="98" r="1.2" fill="#6b8e23" opacity="0.8"/>
+  <circle cx="92" cy="112" r="1.3" fill="#6b8e23" opacity="0.8"/>
+  <circle cx="110" cy="94" r="1.1" fill="#6b8e23" opacity="0.7"/>
+</svg>
