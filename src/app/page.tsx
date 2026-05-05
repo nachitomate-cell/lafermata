@@ -64,19 +64,20 @@ export default function HomePage() {
         {/* Contenido */}
         <div className="relative z-10 space-y-5 max-w-xl">
           <div
-            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold"
+            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold anim-fade-in-up"
             style={{
               background: 'rgba(201,168,76,0.18)',
               border: '1px solid rgba(201,168,76,0.5)',
               color: 'var(--gold)',
               backdropFilter: 'blur(8px)',
+              animationDelay: '0ms',
             }}
           >
             🏆 50 Top Pizza Latin América 2026
           </div>
 
           {/* Badge logo */}
-          <div className="flex justify-center">
+          <div className="flex justify-center anim-fade-in-up" style={{ animationDelay: '80ms' }}>
             <div
               className="relative w-20 h-20 rounded-full overflow-hidden"
               style={{ border: '2px solid rgba(232,65,26,0.6)', boxShadow: '0 0 24px rgba(232,65,26,0.25)' }}
@@ -91,17 +92,20 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black leading-tight tracking-tight" style={{ color: 'var(--cream)' }}>
+          <h1
+            className="text-4xl sm:text-5xl font-black leading-tight tracking-tight anim-fade-in-up"
+            style={{ color: 'var(--cream)', animationDelay: '160ms' }}
+          >
             Un Terminal<br />
             <span style={{ color: 'var(--fire)' }}>de Sabores</span>
           </h1>
 
-          <p className="text-base" style={{ color: 'rgba(245,240,232,0.85)' }}>
+          <p className="text-base anim-fade-in-up" style={{ color: 'rgba(245,240,232,0.85)', animationDelay: '240ms' }}>
             Pizzería napoletana artesanal en el corazón de Viña del Mar.<br />
             Horno a leña · Masa de fermentación lenta · Ingredientes premium.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2 anim-fade-in-up" style={{ animationDelay: '320ms' }}>
             <Link
               href="/menu"
               className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold text-sm transition-all active:scale-95"
@@ -126,7 +130,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Almuerzo notice ────────────────────────────────── */}
-      <section className="px-4 max-w-2xl mx-auto -mt-4 mb-8">
+      <section className="px-4 max-w-2xl mx-auto -mt-4 mb-8 anim-fade-in-up" style={{ animationDelay: '420ms' }}>
         <div
           className="rounded-2xl px-5 py-4 flex items-start gap-3"
           style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
@@ -143,7 +147,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Nuestro Local ──────────────────────────────────── */}
-      <section className="px-4 max-w-2xl mx-auto mb-12">
+      <section className="px-4 max-w-2xl mx-auto mb-12 anim-fade-in-up" style={{ animationDelay: '500ms' }}>
         <div className="relative rounded-3xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
           <Image
             src="/images/local.webp"
@@ -173,14 +177,14 @@ export default function HomePage() {
 
       {/* ── Menu categories preview ────────────────────────── */}
       <section className="px-4 max-w-2xl mx-auto mb-12">
-        <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--cream)' }}>Nuestra Propuesta</h2>
+        <h2 className="text-lg font-bold mb-4 anim-fade-in-up" style={{ color: 'var(--cream)', animationDelay: '560ms' }}>Nuestra Propuesta</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {menuFeatures.map(f => (
+          {menuFeatures.map((f, i) => (
             <Link
               key={f.label}
               href="/menu"
-              className="rounded-2xl p-4 flex flex-col gap-2 transition-all hover:-translate-y-0.5 active:scale-95"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+              className="rounded-2xl p-4 flex flex-col gap-2 transition-all hover:-translate-y-1 active:scale-95 anim-fade-in-up"
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)', animationDelay: `${600 + i * 60}ms` }}
             >
               <div className="relative w-14 h-14">
                 <Image src={f.image} alt={f.label} fill className="object-contain" unoptimized />
@@ -194,13 +198,13 @@ export default function HomePage() {
 
       {/* ── Highlights ─────────────────────────────────────── */}
       <section className="px-4 max-w-2xl mx-auto mb-12">
-        <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--cream)' }}>Por qué La Fermata</h2>
+        <h2 className="text-lg font-bold mb-4 anim-fade-in-up" style={{ color: 'var(--cream)', animationDelay: '960ms' }}>Por qué La Fermata</h2>
         <div className="space-y-3">
-          {highlights.map(h => (
+          {highlights.map((h, i) => (
             <div
               key={h.title}
-              className="flex items-start gap-4 rounded-2xl p-4"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+              className="flex items-start gap-4 rounded-2xl p-4 anim-fade-in-up"
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)', animationDelay: `${1000 + i * 80}ms` }}
             >
               <span className="text-3xl mt-0.5">{h.icon}</span>
               <div>

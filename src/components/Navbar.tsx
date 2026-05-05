@@ -3,11 +3,23 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
   const { count, setIsOpen } = useCart();
   const pathname = usePathname();
+  const prevCount = useRef(count);
+  const [cartBump, setCartBump] = useState(false);
+
+  useEffect(() => {
+    if (count > prevCount.current) {
+      setCartBump(false);
+      requestAnimationFrame(() => { setCartBump(true); });
+      setTimeout(() => setCartBump(false), 400);
+    }
+    prevCount.current = count;
+  }, [count]);
 
   const links = [
     { href: '/', label: 'Inicio' },
@@ -49,7 +61,7 @@ export default function Navbar() {
 
       <button
         onClick={() => setIsOpen(true)}
-        className="relative flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all active:scale-95"
+        className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all active:scale-95 ${cartBump ? 'anim-scale-pop' : ''}`}
         style={{ background: count > 0 ? 'var(--fire)' : 'var(--surface2)', color: 'var(--cream)', border: '1px solid var(--border)' }}
       >
         <span>🛒</span>

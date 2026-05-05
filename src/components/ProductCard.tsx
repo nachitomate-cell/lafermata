@@ -23,7 +23,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div
-      className="flex flex-col rounded-2xl overflow-hidden transition-transform hover:-translate-y-0.5"
+      className="flex flex-col rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg anim-fade-in-up"
       style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
     >
       <div className="p-4 flex-1 flex flex-col gap-2">
@@ -87,10 +87,11 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
         <button
           onClick={handleAdd}
-          className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all active:scale-95"
+          className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-colors active:scale-95 ${added ? 'anim-added-flash anim-scale-pop' : ''}`}
           style={{
             background: added ? '#25D366' : 'var(--fire)',
             color: '#fff',
+            transition: 'background 0.25s ease',
           }}
         >
           {added ? '✓ Listo' : '+ Agregar'}

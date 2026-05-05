@@ -40,12 +40,12 @@ export default function CartDrawer() {
   return (
     <>
       <div
-        className="fixed inset-0 z-50"
+        className="fixed inset-0 z-50 anim-fade-in"
         style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
         onClick={() => setIsOpen(false)}
       />
       <aside
-        className="fixed right-0 top-0 bottom-0 z-50 flex flex-col w-full max-w-md shadow-2xl"
+        className="fixed right-0 top-0 bottom-0 z-50 flex flex-col w-full max-w-md shadow-2xl anim-slide-right"
         style={{ background: 'var(--surface)', borderLeft: '1px solid var(--border)' }}
       >
         {/* Header */}
@@ -77,7 +77,7 @@ export default function CartDrawer() {
               </button>
             </div>
           ) : (
-            items.map(item => {
+            items.map((item, idx) => {
               const price = item.sizeFamily && item.product.priceFamily
                 ? item.product.priceFamily
                 : item.product.price;
@@ -85,8 +85,8 @@ export default function CartDrawer() {
               return (
                 <div
                   key={key}
-                  className="flex items-center gap-3 rounded-xl p-3"
-                  style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+                  className="flex items-center gap-3 rounded-xl p-3 anim-fade-in-up"
+                  style={{ background: 'var(--surface2)', border: '1px solid var(--border)', animationDelay: `${idx * 60}ms` }}
                 >
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-sm truncate" style={{ color: 'var(--cream)' }}>

@@ -76,7 +76,8 @@ export default function MenuPage() {
       {/* Active category hero */}
       {currentCat && (
         <div
-          className="flex items-center gap-4 px-4 py-5"
+          key={`hero-${activeCategory}`}
+          className="flex items-center gap-4 px-4 py-5 anim-fade-in-up"
           style={{ borderBottom: '1px solid var(--border)' }}
         >
           <div
@@ -113,9 +114,11 @@ export default function MenuPage() {
       )}
 
       {/* Product grid */}
-      <div className="px-4 pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map(product => (
-          <ProductCard key={product.id} product={product} />
+      <div key={`grid-${activeCategory}`} className="px-4 pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filtered.map((product, i) => (
+          <div key={product.id} className="anim-fade-in-up" style={{ animationDelay: `${i * 55}ms` }}>
+            <ProductCard product={product} />
+          </div>
         ))}
         {filtered.length === 0 && (
           <p className="col-span-full text-center py-16" style={{ color: 'var(--muted)' }}>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/context/CartContext';
 
 const links = [
@@ -14,6 +15,17 @@ const links = [
 export default function BottomNav() {
   const pathname = usePathname();
   const { count, setIsOpen } = useCart();
+  const prevCount = useRef(count);
+  const [badgePop, setBadgePop] = useState(false);
+
+  useEffect(() => {
+    if (count > prevCount.current) {
+      setBadgePop(false);
+      requestAnimationFrame(() => { setBadgePop(true); });
+      setTimeout(() => setBadgePop(false), 400);
+    }
+    prevCount.current = count;
+  }, [count]);
 
   return (
     <nav
@@ -45,7 +57,8 @@ export default function BottomNav() {
           🛒
           {count > 0 && (
             <span
-              className="absolute -top-1 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
+              key={count}
+              className={`absolute -top-1 -right-1.5 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold ${badgePop ? 'anim-badge-pop' : ''}`}
               style={{ background: 'var(--fire)', color: '#fff', fontSize: '10px' }}
             >
               {count}
