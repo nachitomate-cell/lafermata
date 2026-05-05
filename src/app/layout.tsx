@@ -5,6 +5,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import BottomNav from '@/components/BottomNav';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'La Fermata – Pizzería Napoletana | Viña del Mar',
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </footer>
         </CartProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
