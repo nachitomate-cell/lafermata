@@ -52,6 +52,7 @@ export interface UserClubData {
   baneado: boolean;
   createdAt: string;
   rol: "cliente" | "staff";
+  flavorProfile?: Partial<Record<"pomodoro"|"crema"|"pesto"|"mar"|"fungi"|"carne"|"dolce", number>>;
 }
 
 export interface Premio {
@@ -314,6 +315,45 @@ export async function verificarCanjesExpirados(userId: string): Promise<void> {
     });
     if (changed) await batch.commit();
   } catch { /* no crítico */ }
+}
+
+/** Staff da un sello directamente a un cliente (sin QR handshake). */
+export async function darSellosManual(
+  targetUserId: string,
+  targetUserName: string,
+  cantidad: number = 1,
+): Promise<{ nuevoTotal: number }> {
+  const userRef = doc(db, "fermata_usuarios", targetUserId);
+
+  const result = await runTransaction(db, async (transaction) => {
+    const userSnap = await transaction.get(userRef);
+    if (!userSnap.exists()) throw new Error("Usuario no encontrado.");
+    const data = userSnap.data();
+    if (data.baneado) throw new Error("Usuario baneado.");
+
+    const currentSellos = data.sellos ?? 0;
+    const nuevoTotal = currentSellos + cantidad;
+
+    transaction.update(userRef, {
+      sellos: increment(cantidad),
+      totalSellosHistoricos: increment(cantidad),
+      recompensaDisponible: nuevoTotal >= STAMPS_PER_REWARD,
+      lastPurchaseAt: new Date().toISOString(),
+    });
+
+    return { nuevoTotal, userName: data.nombre || targetUserName };
+  });
+
+  addDoc(collection(db, "fermata_logs"), {
+    usuarioId: targetUserId,
+    usuarioNombre: result.userName,
+    accion: `Sello manual acreditado (staff) — total: ${result.nuevoTotal}`,
+    fecha: new Date().toISOString(),
+    tipo: "SELLO",
+    metodo: "MANUAL",
+  }).catch(() => {});
+
+  return { nuevoTotal: result.nuevoTotal };
 }
 
 /** El staff marca un canje como usado. */

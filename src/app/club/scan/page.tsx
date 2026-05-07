@@ -7,6 +7,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { crearPendingStamp, cancelarPendingStamp } from '@/lib/puntos';
+import { FLAVOR_NODES, actualizarDNAFlavor, FlavorId, FlavorProfile } from '@/lib/dna';
 
 type Phase =
   | 'scanning'
@@ -21,6 +22,78 @@ type Phase =
 const FERMATA_QR_PREFIX = 'lafermata://staff?vendorId=';
 const FERMATA_VENDOR_PHRASE = 'lafermata';
 
+function DNAPickerSheet({
+  onSubmit,
+  onClose,
+}: {
+  onSubmit: (selected: Set<FlavorId>) => void;
+  onClose: () => void;
+}) {
+  const [selected, setSelected] = useState<Set<FlavorId>>(new Set());
+
+  function toggle(id: FlavorId) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  return (
+    <div
+      className="absolute inset-0 flex items-end z-20"
+      style={{ background: 'rgba(0,0,0,0.6)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div
+        className="w-full rounded-t-3xl px-5 pt-4 pb-8 space-y-4"
+        style={{ background: '#1e1b16', border: '1px solid #2a2520' }}
+      >
+        <div className="w-10 h-1 rounded-full mx-auto" style={{ background: '#2a2520' }} />
+        <div>
+          <p className="text-base font-black text-white">🧬 ¿Qué pediste hoy?</p>
+          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Actualiza tu ADN gastronómico</p>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {FLAVOR_NODES.map(node => {
+            const active = selected.has(node.id);
+            return (
+              <button
+                key={node.id}
+                onClick={() => toggle(node.id)}
+                className="flex flex-col items-center gap-1 py-3 rounded-2xl transition-all active:scale-90"
+                style={{
+                  background: active ? `${node.color}22` : '#161410',
+                  border: `2px solid ${active ? node.color : '#2a2520'}`,
+                }}
+              >
+                <span className="text-xl">{node.emoji}</span>
+                <span className="text-xs font-bold" style={{ color: active ? node.color : 'rgba(255,255,255,0.5)', fontSize: '10px' }}>
+                  {node.label}
+                </span>
+              </button>
+            );
+          })}
+          <div />
+        </div>
+        <button
+          onClick={() => onSubmit(selected)}
+          className="w-full py-3 rounded-2xl font-black text-sm transition-all active:scale-95"
+          style={{
+            background: selected.size > 0
+              ? 'linear-gradient(135deg,#e8411a,#c9a84c)'
+              : '#161410',
+            color: selected.size > 0 ? '#fff' : 'rgba(255,255,255,0.4)',
+            border: selected.size > 0 ? 'none' : '1px solid #2a2520',
+          }}
+        >
+          {selected.size > 0 ? `Guardar (${selected.size} sabor${selected.size !== 1 ? 'es' : ''})` : 'Omitir'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function ScanPage() {
   const { user, userData } = useAuth();
   const router = useRouter();
@@ -31,6 +104,8 @@ export default function ScanPage() {
   const [phase, setPhase] = useState<Phase>('scanning');
   const [nuevoTotal, setNuevoTotal] = useState(0);
   const [scannerReady, setScannerReady] = useState(false);
+  const [showDnaPicker, setShowDnaPicker] = useState(false);
+  const [dnaSaved, setDnaSaved] = useState(false);
 
   useEffect(() => {
     if (!user) { router.replace('/club/unete'); return; }
@@ -125,6 +200,15 @@ export default function ScanPage() {
       setPhase('error_qr');
     }
   }, [user, userData, router]);
+
+  async function handleDnaSubmit(selected: Set<FlavorId>) {
+    setShowDnaPicker(false);
+    if (!user || selected.size === 0) return;
+    const deltas: Partial<FlavorProfile> = {};
+    for (const id of selected) deltas[id] = 1;
+    try { await actualizarDNAFlavor(user.uid, deltas); } catch { /* no crítico */ }
+    setDnaSaved(true);
+  }
 
   async function handleCancel() {
     if (pendingIdRef.current) {
@@ -227,7 +311,31 @@ export default function ScanPage() {
                   </Link>
                 )}
               </div>
+
+              {/* DNA picker CTA */}
+              {dnaSaved ? (
+                <p className="text-center text-sm font-bold" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  🧬 ADN actualizado ✅
+                </p>
+              ) : (
+                <button
+                  onClick={() => setShowDnaPicker(true)}
+                  className="w-full py-3 rounded-2xl font-bold text-sm active:scale-95 transition-transform"
+                  style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.85)' }}
+                >
+                  🧬 ¿Qué pediste hoy?
+                </button>
+              )}
             </div>
+
+            {/* DNA picker sheet */}
+            {showDnaPicker && (
+              <DNAPickerSheet
+                onSubmit={handleDnaSubmit}
+                onClose={() => setShowDnaPicker(false)}
+              />
+            )}
+
             <style>{`
               @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
               @keyframes ping { 75%,100%{transform:translate(-50%,-50%) scale(1.5);opacity:0} }

@@ -1,10 +1,25 @@
 import type { Metadata, Viewport } from 'next';
+import { Playfair_Display, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['700', '900'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 import { AuthProvider } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import BottomNav from '@/components/BottomNav';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export const metadata: Metadata = {
   title: 'La Fermata – Pizzería Napoletana | Viña del Mar',
@@ -34,10 +49,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className="h-full">
+    <html lang="es" className={`h-full ${playfair.variable} ${dmSans.variable}`}>
       <body className="min-h-full flex flex-col">
         <AuthProvider>
         <CartProvider>
+          <LoadingScreen />
           <Navbar />
           <main className="flex-1">{children}</main>
           <CartDrawer />

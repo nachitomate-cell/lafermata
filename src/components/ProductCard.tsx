@@ -1,8 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import type { Product } from '@/data/menu';
 import { useCart } from '@/context/CartContext';
+
+const CATEGORY_IMAGES: Partial<Record<string, string>> = {
+  pizzas:              '/images/pizzas/napoletana.svg',
+  sin_gluten:          '/images/pizzas/napoletana.svg',
+};
 
 function formatCLP(n: number) {
   return '$' + n.toLocaleString('es-CL');
@@ -20,12 +26,28 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   const price = sizeFamily && product.priceFamily ? product.priceFamily : product.price;
+  const cardImage = CATEGORY_IMAGES[product.category];
 
   return (
     <div
       className="flex flex-col rounded-2xl overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-lg anim-fade-in-up"
       style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
     >
+      {cardImage && (
+        <div className="relative w-full overflow-hidden" style={{ height: 140, background: 'var(--surface2)' }}>
+          <Image
+            src={cardImage}
+            alt={product.name}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to bottom, transparent 50%, var(--surface) 100%)' }}
+          />
+        </div>
+      )}
       <div className="p-4 flex-1 flex flex-col gap-2">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-semibold text-sm leading-snug" style={{ color: 'var(--cream)' }}>

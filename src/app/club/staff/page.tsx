@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import QRCode from 'react-qr-code';
+import { setStaffSession, isStaffSessionValid, clearStaffSession } from '@/lib/staffSession';
 import {
   collection, query, where, onSnapshot, orderBy, limit,
   Timestamp, addDoc, getDocs,
@@ -10,7 +11,7 @@ import {
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { db, auth } from '@/lib/firebase';
 import {
-  confirmarHandshake, rechazarHandshake, marcarCanjeUsado,
+  confirmarHandshake, rechazarHandshake, marcarCanjeUsado, darSellosManual,
   FERMATA_VENDOR_ID, FERMATA_VENDOR_NAME,
 } from '@/lib/puntos';
 
@@ -156,10 +157,172 @@ function FirebaseLoginScreen({ onSuccess }: { onSuccess: () => void }) {
   );
 }
 
+// ── Manual stamp tab ──────────────────────────────────────────────────────────
+
+interface ClienteResult {
+  id: string;
+  nombre: string;
+  correo: string;
+  sellos: number;
+  totalSellosHistoricos: number;
+}
+
+function ManualStampTab() {
+  const [search,    setSearch]    = useState('');
+  const [results,   setResults]   = useState<ClienteResult[]>([]);
+  const [searching, setSearching] = useState(false);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [giving,    setGiving]    = useState(false);
+  const [feedback,  setFeedback]  = useState('');
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const term = search.trim().toLowerCase();
+    if (!term) return;
+    setSearching(true);
+    setResults([]);
+    setConfirmId(null);
+    setFeedback('');
+    try {
+      const snap = await getDocs(query(
+        collection(db, 'fermata_usuarios'),
+        where('rol', '==', 'cliente'),
+        limit(100),
+      ));
+      const matched = snap.docs
+        .map(d => ({ id: d.id, ...d.data() } as ClienteResult))
+        .filter(u =>
+          u.nombre?.toLowerCase().includes(term) ||
+          u.correo?.toLowerCase().includes(term)
+        )
+        .slice(0, 10);
+      setResults(matched);
+    } finally {
+      setSearching(false);
+    }
+  }
+
+  async function handleGive(userId: string, userName: string) {
+    setGiving(true);
+    try {
+      const { nuevoTotal } = await darSellosManual(userId, userName);
+      setFeedback(`✅ Sello dado a ${userName} — ahora tiene ${nuevoTotal}`);
+      setConfirmId(null);
+      setResults(prev => prev.map(r =>
+        r.id === userId
+          ? { ...r, sellos: r.sellos + 1, totalSellosHistoricos: r.totalSellosHistoricos + 1 }
+          : r
+      ));
+    } catch (err: unknown) {
+      alert((err as Error)?.message || 'Error al dar sello.');
+    } finally {
+      setGiving(false);
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>
+        ✏️ Dar sello manual
+      </p>
+
+      {/* Search form */}
+      <form onSubmit={handleSearch} className="flex gap-2">
+        <input
+          value={search}
+          onChange={e => { setSearch(e.target.value); setFeedback(''); }}
+          placeholder="Nombre o email del cliente..."
+          className="flex-1 px-4 py-3 rounded-xl text-sm outline-none"
+          style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--cream)' }}
+        />
+        <button type="submit" disabled={searching || !search.trim()}
+          className="px-4 py-3 rounded-xl font-bold text-sm disabled:opacity-40 transition-all active:scale-95"
+          style={{ background: 'var(--fire)', color: '#fff' }}>
+          {searching ? '⏳' : '🔍'}
+        </button>
+      </form>
+
+      {/* Feedback */}
+      {feedback && (
+        <div className="rounded-2xl px-4 py-3 text-sm font-bold"
+          style={{ background: 'rgba(74,222,128,0.1)', border: '1px solid rgba(74,222,128,0.3)', color: '#4ade80' }}>
+          {feedback}
+        </div>
+      )}
+
+      {/* No results */}
+      {results.length === 0 && search && !searching && (
+        <p className="text-sm text-center py-8" style={{ color: 'var(--muted)' }}>
+          Sin resultados para &ldquo;{search}&rdquo;
+        </p>
+      )}
+
+      {/* Results */}
+      {results.map(u => (
+        <div key={u.id} className="rounded-2xl p-4 space-y-3 transition-all"
+          style={{
+            background: 'var(--surface)',
+            border: `1px solid ${confirmId === u.id ? 'rgba(232,65,26,0.45)' : 'var(--border)'}`,
+          }}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-base font-black shrink-0"
+              style={{ background: 'rgba(201,168,76,0.15)', color: 'var(--gold)' }}>
+              {u.nombre.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold truncate" style={{ color: 'var(--cream)' }}>{u.nombre}</p>
+              <p className="text-xs truncate" style={{ color: 'var(--muted)' }}>{u.correo}</p>
+            </div>
+            <div className="text-right shrink-0">
+              <p className="text-xl font-black" style={{ color: 'var(--fire)' }}>{u.sellos}</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>{u.totalSellosHistoricos} total</p>
+            </div>
+          </div>
+
+          {confirmId !== u.id ? (
+            <button
+              onClick={() => { setConfirmId(u.id); setFeedback(''); }}
+              className="w-full py-3 rounded-xl font-black text-sm transition-all active:scale-95"
+              style={{ background: 'rgba(232,65,26,0.1)', color: 'var(--fire)', border: '1px solid rgba(232,65,26,0.3)' }}>
+              🍕 Dar 1 pedazo
+            </button>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-sm text-center font-bold" style={{ color: 'var(--cream)' }}>
+                ¿Dar 1 sello a <span style={{ color: 'var(--fire)' }}>{u.nombre}</span>?
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleGive(u.id, u.nombre)}
+                  disabled={giving}
+                  className="flex-1 py-3 rounded-xl font-black text-sm transition-all active:scale-95 disabled:opacity-50"
+                  style={{ background: 'var(--fire)', color: '#fff' }}>
+                  {giving ? '⏳' : '✅ Confirmar'}
+                </button>
+                <button
+                  onClick={() => setConfirmId(null)}
+                  disabled={giving}
+                  className="px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95"
+                  style={{ background: 'var(--surface2)', color: 'var(--muted)', border: '1px solid var(--border)' }}>
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+
+      <p className="text-xs text-center" style={{ color: 'var(--muted)' }}>
+        Úsalo solo cuando el cliente no pueda escanear el QR del local.
+      </p>
+    </div>
+  );
+}
+
 // ── Main panel ─────────────────────────────────────────────────────────────────
 export default function StaffPage() {
-  const [step, setStep]           = useState<'pin' | 'login' | 'panel'>('pin');
-  const [tab, setTab]             = useState<'queue' | 'qr' | 'canjes' | 'log'>('queue');
+  const [step, setStep]           = useState<'pin' | 'login' | 'panel'>(() => isStaffSessionValid() ? 'panel' : 'pin');
+  const [tab, setTab]             = useState<'queue' | 'manual' | 'qr' | 'canjes' | 'log'>('queue');
   const [pending, setPending]     = useState<PendingStamp[]>([]);
   const [logs, setLogs]           = useState<LogEntry[]>([]);
   const [activeCanjes, setActiveCanjes] = useState<ActiveCanje[]>([]);
@@ -169,6 +332,7 @@ export default function StaffPage() {
 
   // After correct PIN, try auto-sign-in with env credentials, else show login form
   async function handlePinSuccess() {
+    setStaffSession();
     if (STAFF_EMAIL && STAFF_PASSWORD) {
       try {
         await signInWithEmailAndPassword(auth, STAFF_EMAIL, STAFF_PASSWORD);
@@ -181,9 +345,10 @@ export default function StaffPage() {
     }
   }
 
-  async function handleLoginSuccess() { setStep('panel'); }
+  async function handleLoginSuccess() { setStaffSession(); setStep('panel'); }
 
   async function handleSignOut() {
+    clearStaffSession();
     await signOut(auth).catch(() => {});
     setStep('pin');
   }
@@ -261,6 +426,7 @@ export default function StaffPage() {
 
   const tabs = [
     { id: 'queue',  label: 'Cola',    icon: '📋', badge: pending.length },
+    { id: 'manual', label: 'Manual',  icon: '✏️' },
     { id: 'qr',     label: 'Mi QR',   icon: '🔲' },
     { id: 'canjes', label: 'Validar', icon: '🎫', badge: activeCanjes.length },
     { id: 'log',    label: 'Log',     icon: '📊' },
@@ -283,6 +449,26 @@ export default function StaffPage() {
         </button>
       </div>
 
+      {/* Quick links to other staff tools */}
+      <div className="flex overflow-x-auto gap-2 px-4 py-2 no-scrollbar"
+        style={{ background: 'rgba(201,168,76,0.05)', borderBottom: '1px solid var(--border)' }}>
+        <Link href="/reservas/staff"
+          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+          style={{ background: 'var(--surface2)', color: 'var(--gold)', border: '1px solid rgba(201,168,76,0.3)' }}>
+          📅 Reservas
+        </Link>
+        <Link href="/cocina"
+          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+          style={{ background: 'var(--surface2)', color: '#e8411a', border: '1px solid rgba(232,65,26,0.3)' }}>
+          🍕 Cocina
+        </Link>
+        <Link href="/panel"
+          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+          style={{ background: 'var(--surface2)', color: 'var(--muted)', border: '1px solid var(--border)' }}>
+          📊 Métricas
+        </Link>
+      </div>
+
       {/* Tabs */}
       <div className="flex overflow-x-auto gap-2 px-4 py-3 no-scrollbar"
         style={{ borderBottom: '1px solid var(--border)' }}>
@@ -303,6 +489,9 @@ export default function StaffPage() {
       </div>
 
       <div className="max-w-lg mx-auto px-4 py-5">
+
+        {/* ── Manual stamp ─────────────────────────────────── */}
+        {tab === 'manual' && <ManualStampTab />}
 
         {/* ── Cola ─────────────────────────────────────────── */}
         {tab === 'queue' && (

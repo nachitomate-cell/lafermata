@@ -16,9 +16,18 @@
 body {
   background-color: var(--bg);
   color: var(--cream);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'kern' 1, 'liga' 1;
 }
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-playfair, Georgia, 'Times New Roman', serif);
+  letter-spacing: -0.01em;
+}
+
+/* Keep utility font overrides working */
+.font-mono { font-family: ui-monospace, monospace; }
 
 html { scroll-behavior: smooth; }
 

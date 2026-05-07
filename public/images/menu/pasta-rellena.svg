@@ -1,53 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <ellipse cx="100" cy="168" rx="64" ry="8" fill="rgba(0,0,0,0.25)"/>
-  <path d="M 30 90 Q 28 160 100 168 Q 172 160 170 90 Z" fill="#e8e0d0"/>
-  <path d="M 38 90 Q 36 155 100 162 Q 164 155 162 90 Z" fill="#f5f0e8"/>
-  <ellipse cx="100" cy="90" rx="70" ry="14" fill="#e8e0d0"/>
-  <ellipse cx="100" cy="90" rx="62" ry="10" fill="#f5f0e8"/>
-  <ellipse cx="100" cy="89" rx="62" ry="10" fill="none" stroke="#d8d0c0" stroke-width="1.5"/>
-  <!-- Butter sage sauce -->
-  <ellipse cx="100" cy="128" rx="50" ry="30" fill="#d4a820" opacity="0.55"/>
-  <!-- Ravioli pieces -->
-  <!-- Row 1 -->
-  <g>
-    <rect x="58" y="98" width="32" height="24" rx="5" fill="#f8e890"/>
-    <rect x="58" y="98" width="32" height="24" rx="5" fill="none" stroke="#d4b840" stroke-width="1.5"/>
-    <line x1="74" y1="98" x2="74" y2="122" stroke="#d4b840" stroke-width="1.5"/>
-    <ellipse cx="65" cy="110" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <ellipse cx="83" cy="110" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <!-- Crimped edges -->
-    <path d="M 58 98 Q 61 95 64 98 Q 67 95 70 98 Q 73 95 76 98 Q 79 95 82 98 Q 85 95 88 98 Q 90 95 90 98" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-    <path d="M 58 122 Q 61 125 64 122 Q 67 125 70 122 Q 73 125 76 122 Q 79 125 82 122 Q 85 125 88 122 Q 90 125 90 122" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-  </g>
-  <g>
-    <rect x="110" y="98" width="32" height="24" rx="5" fill="#f8e890"/>
-    <rect x="110" y="98" width="32" height="24" rx="5" fill="none" stroke="#d4b840" stroke-width="1.5"/>
-    <line x1="126" y1="98" x2="126" y2="122" stroke="#d4b840" stroke-width="1.5"/>
-    <ellipse cx="117" cy="110" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <ellipse cx="135" cy="110" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <path d="M 110 98 Q 113 95 116 98 Q 119 95 122 98 Q 125 95 128 98 Q 131 95 134 98 Q 137 95 140 98 Q 142 95 142 98" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-    <path d="M 110 122 Q 113 125 116 122 Q 119 125 122 122 Q 125 125 128 122 Q 131 125 134 122 Q 137 125 140 122 Q 142 125 142 122" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-  </g>
-  <!-- Row 2 -->
-  <g>
-    <rect x="74" y="128" width="32" height="24" rx="5" fill="#f8e890"/>
-    <rect x="74" y="128" width="32" height="24" rx="5" fill="none" stroke="#d4b840" stroke-width="1.5"/>
-    <line x1="90" y1="128" x2="90" y2="152" stroke="#d4b840" stroke-width="1.5"/>
-    <ellipse cx="81" cy="140" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <ellipse cx="99" cy="140" rx="5" ry="4" fill="#e8a060" opacity="0.8"/>
-    <path d="M 74 128 Q 77 125 80 128 Q 83 125 86 128 Q 89 125 92 128 Q 95 125 98 128 Q 101 125 104 128 Q 106 125 106 128" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-    <path d="M 74 152 Q 77 155 80 152 Q 83 155 86 152 Q 89 155 92 152 Q 95 155 98 152 Q 101 155 104 152 Q 106 155 106 152" fill="none" stroke="#c8a820" stroke-width="1.5"/>
-  </g>
+  <!-- Plate shadow -->
+  <ellipse cx="100" cy="168" rx="64" ry="8" fill="rgba(0,0,0,0.3)"/>
+  <!-- White plate -->
+  <circle cx="100" cy="140" r="66" fill="#e8e2d4"/>
+  <circle cx="100" cy="140" r="58" fill="#f4f0e4"/>
+
+  <!-- Tortellini pieces arranged on plate -->
+  <!-- Tortellino shape: a ring pinched in the middle -->
+
+  <!-- Tortellino 1 (center) -->
+  <path d="M 84 120 Q 100 112 116 120 Q 124 130 116 138 Q 100 145 84 138 Q 76 130 84 120 Z" fill="#f0d060"/>
+  <path d="M 88 124 Q 100 118 112 124 Q 118 130 112 136 Q 100 141 88 136 Q 82 130 88 124 Z" fill="#e8c850"/>
+  <path d="M 94 116 Q 100 112 106 116" fill="none" stroke="#c8a030" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 94 144 Q 100 148 106 144" fill="none" stroke="#c8a030" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Center pinch -->
+  <ellipse cx="100" cy="130" rx="5" ry="6" fill="#c8a030"/>
+  <!-- Filling peek -->
+  <ellipse cx="100" cy="130" rx="3" ry="3.5" fill="#f2e8d0" opacity="0.7"/>
+
+  <!-- Tortellino 2 (top-left) -->
+  <path d="M 56 90 Q 70 82 84 90 Q 90 98 84 106 Q 70 112 56 106 Q 50 98 56 90 Z" fill="#f0d060" transform="rotate(-20,70,96)"/>
+  <path d="M 60 94 Q 70 88 80 94 Q 84 100 80 106 Q 70 110 60 106 Q 56 100 60 94 Z" fill="#e8c850" transform="rotate(-20,70,100)"/>
+  <ellipse cx="70" cy="98" rx="4" ry="5" fill="#c8a030" transform="rotate(-20,70,98)"/>
+
+  <!-- Tortellino 3 (top-right) -->
+  <path d="M 116 90 Q 130 82 144 90 Q 150 98 144 106 Q 130 112 116 106 Q 110 98 116 90 Z" fill="#f0d060" transform="rotate(15,130,96)"/>
+  <path d="M 120 94 Q 130 88 140 94 Q 144 100 140 106 Q 130 110 120 106 Q 116 100 120 94 Z" fill="#e8c850" transform="rotate(15,130,100)"/>
+  <ellipse cx="130" cy="98" rx="4" ry="5" fill="#c8a030" transform="rotate(15,130,98)"/>
+
+  <!-- Tortellino 4 (bottom-left) -->
+  <path d="M 62 148 Q 76 140 90 148 Q 96 156 90 164 Q 76 170 62 164 Q 56 156 62 148 Z" fill="#f0d060" transform="rotate(-10,76,156)"/>
+  <ellipse cx="76" cy="156" rx="4" ry="5" fill="#c8a030" transform="rotate(-10,76,156)"/>
+
+  <!-- Tortellino 5 (bottom-right) -->
+  <path d="M 110 148 Q 124 140 138 148 Q 144 156 138 164 Q 124 170 110 164 Q 104 156 110 148 Z" fill="#f0d060" transform="rotate(10,124,156)"/>
+  <ellipse cx="124" cy="156" rx="4" ry="5" fill="#c8a030" transform="rotate(10,124,156)"/>
+
+  <!-- Butter-sage sauce -->
+  <path d="M 66 132 Q 100 126 134 132" fill="none" stroke="rgba(200,160,40,0.45)" stroke-width="8" stroke-linecap="round"/>
+  <path d="M 72 142 Q 100 137 128 143" fill="none" stroke="rgba(200,160,40,0.35)" stroke-width="6" stroke-linecap="round"/>
+
   <!-- Sage leaves -->
-  <ellipse cx="58" cy="128" rx="10" ry="5" fill="#7a9a40" transform="rotate(20,58,128)"/>
-  <ellipse cx="57" cy="127" rx="10" ry="5" fill="#8aaa50" transform="rotate(20,57,127)"/>
-  <ellipse cx="140" cy="134" rx="9" ry="4.5" fill="#8aaa50" transform="rotate(-15,140,134)"/>
-  <!-- Butter drops -->
-  <circle cx="66" cy="136" r="4" fill="#f0d050" opacity="0.7"/>
-  <circle cx="130" cy="124" r="3.5" fill="#f0d050" opacity="0.65"/>
+  <ellipse cx="82"  cy="128" rx="9" ry="5" fill="#5a8040" opacity="0.85" transform="rotate(-25,82,128)"/>
+  <ellipse cx="118" cy="126" rx="8" ry="4.5" fill="#5a8040" opacity="0.82" transform="rotate(20,118,126)"/>
+
   <!-- Parmigiano -->
-  <ellipse cx="100" cy="120" rx="5" ry="2.5" fill="#f8f0d8" opacity="0.9" transform="rotate(-8,100,120)"/>
-  <ellipse cx="115" cy="130" rx="4" ry="2" fill="#f0e8d0" opacity="0.85"/>
-  <ellipse cx="85" cy="125" rx="4.5" ry="2" fill="#f8f0d8" opacity="0.8" transform="rotate(12,85,125)"/>
-  <ellipse cx="72" cy="89" rx="16" ry="5" fill="rgba(255,255,255,0.3)" transform="rotate(-10,72,89)"/>
+  <ellipse cx="100" cy="116" rx="8" ry="3.5" fill="#f8f0d8" opacity="0.85" transform="rotate(-10,100,116)"/>
+  <ellipse cx="116" cy="134" rx="6" ry="3"   fill="#f0e8d0" opacity="0.8" transform="rotate(22,116,134)"/>
 </svg>

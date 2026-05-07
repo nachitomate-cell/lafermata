@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="pg-stone" cx="40%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#2c2418"/>
+      <stop offset="100%" stop-color="#0e0c08"/>
+    </radialGradient>
+    <radialGradient id="pg-crust" cx="50%" cy="50%" r="50%">
+      <stop offset="55%" stop-color="#b87a38"/>
+      <stop offset="78%" stop-color="#8a5820"/>
+      <stop offset="100%" stop-color="#4e2e0a"/>
+    </radialGradient>
+    <radialGradient id="pg-sauce" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#cc3822"/>
+      <stop offset="100%" stop-color="#9a2010"/>
+    </radialGradient>
+    <filter id="pg-shadow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feOffset dx="4" dy="8" result="off"/>
+      <feComposite in="off" in2="SourceGraphic" operator="over"/>
+    </filter>
+    <filter id="pg-glow">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- Stone surface -->
+  <rect width="500" height="500" fill="url(#pg-stone)"/>
+  <!-- Stone grain marks -->
+  <line x1="0" y1="140" x2="500" y2="122" stroke="#221c12" stroke-width="2.5" opacity="0.6"/>
+  <line x1="0" y1="268" x2="500" y2="255" stroke="#1c1710" stroke-width="2" opacity="0.5"/>
+  <line x1="0" y1="398" x2="500" y2="415" stroke="#221c12" stroke-width="2.5" opacity="0.55"/>
+  <line x1="80" y1="0" x2="65" y2="500" stroke="#1a1510" stroke-width="1.5" opacity="0.35"/>
+  <line x1="390" y1="0" x2="405" y2="500" stroke="#1a1510" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Pizza ambient shadow on stone -->
+  <ellipse cx="252" cy="268" rx="212" ry="218" fill="rgba(0,0,0,0.55)" filter="url(#pg-shadow)"/>
+
+  <!-- CRUST (outer ring, thick Neapolitan) -->
+  <circle cx="250" cy="250" r="210" fill="url(#pg-crust)"/>
+
+  <!-- Crust leopard char spots (wood-fire burn marks) -->
+  <circle cx="118" cy="130" r="20" fill="#1c0e04" opacity="0.85"/>
+  <circle cx="250" cy="54"  r="24" fill="#180c04" opacity="0.8"/>
+  <circle cx="386" cy="128" r="18" fill="#1c0e04" opacity="0.82"/>
+  <circle cx="448" cy="260" r="21" fill="#180c04" opacity="0.8"/>
+  <circle cx="386" cy="392" r="19" fill="#1c0e04" opacity="0.82"/>
+  <circle cx="250" cy="448" r="23" fill="#180c04" opacity="0.8"/>
+  <circle cx="112" cy="390" r="18" fill="#1c0e04" opacity="0.82"/>
+  <circle cx="56"  cy="258" r="21" fill="#180c04" opacity="0.8"/>
+  <!-- smaller char spots -->
+  <circle cx="182" cy="82"  r="13" fill="#1c0e04" opacity="0.72"/>
+  <circle cx="320" cy="70"  r="11" fill="#1c0e04" opacity="0.68"/>
+  <circle cx="425" cy="188" r="12" fill="#1c0e04" opacity="0.7"/>
+  <circle cx="434" cy="338" r="11" fill="#1c0e04" opacity="0.68"/>
+  <circle cx="318" cy="428" r="13" fill="#1c0e04" opacity="0.72"/>
+  <circle cx="178" cy="438" r="11" fill="#1c0e04" opacity="0.68"/>
+  <circle cx="82"  cy="336" r="12" fill="#1c0e04" opacity="0.7"/>
+  <circle cx="76"  cy="186" r="11" fill="#1c0e04" opacity="0.68"/>
+
+  <!-- Crust top highlight (wood fire glow, top arc) -->
+  <path d="M 72 176 Q 130 90 250 62 Q 370 34 428 148" fill="none" stroke="rgba(255,200,100,0.32)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M 95 192 Q 148 112 250 86 Q 352 60 406 168" fill="none" stroke="rgba(255,225,150,0.18)" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- SAUCE base -->
+  <circle cx="250" cy="250" r="172" fill="url(#pg-sauce)"/>
+
+  <!-- Sauce texture patches -->
+  <circle cx="218" cy="215" r="50" fill="#a81c0c" opacity="0.5"/>
+  <circle cx="295" cy="228" r="42" fill="#a81c0c" opacity="0.45"/>
+  <circle cx="248" cy="300" r="48" fill="#b02010" opacity="0.48"/>
+  <circle cx="190" cy="278" r="34" fill="#c03020" opacity="0.35"/>
+  <circle cx="312" cy="290" r="38" fill="#c03020" opacity="0.35"/>
+  <circle cx="268" cy="188" r="32" fill="#a81c0c" opacity="0.42"/>
+
+  <!-- MOZZARELLA blobs (fior di latte) -->
+  <!-- Central large blob -->
+  <ellipse cx="250" cy="232" rx="55" ry="40" fill="#f4eada" opacity="0.96"/>
+  <!-- Surrounding blobs -->
+  <ellipse cx="178" cy="248" rx="42" ry="30" fill="#f6edd8" opacity="0.93" transform="rotate(-12,178,248)"/>
+  <ellipse cx="322" cy="242" rx="40" ry="28" fill="#f2e8d4" opacity="0.95" transform="rotate(10,322,242)"/>
+  <ellipse cx="256" cy="316" rx="46" ry="30" fill="#f4eada" opacity="0.93" transform="rotate(6,256,316)"/>
+  <ellipse cx="186" cy="306" rx="32" ry="22" fill="#f0e6d2" opacity="0.90" transform="rotate(-18,186,306)"/>
+  <ellipse cx="318" cy="312" rx="34" ry="24" fill="#f4eada" opacity="0.92" transform="rotate(14,318,312)"/>
+  <ellipse cx="214" cy="192" rx="28" ry="20" fill="#f6edd8" opacity="0.88" transform="rotate(-8,214,192)"/>
+  <ellipse cx="292" cy="186" rx="26" ry="18" fill="#f2e8d4" opacity="0.86" transform="rotate(18,292,186)"/>
+
+  <!-- Mozzarella oven browning (golden blush) -->
+  <ellipse cx="246" cy="225" rx="32" ry="22" fill="#d8921e" opacity="0.22" transform="rotate(-5,246,225)"/>
+  <ellipse cx="175" cy="242" rx="24" ry="15" fill="#d8921e" opacity="0.18" transform="rotate(-10,175,242)"/>
+  <ellipse cx="318" cy="238" rx="22" ry="14" fill="#d8921e" opacity="0.20" transform="rotate(8,318,238)"/>
+  <ellipse cx="252" cy="308" rx="26" ry="17" fill="#d8921e" opacity="0.20" transform="rotate(4,252,308)"/>
+
+  <!-- BASIL LEAVES (fresh, post-bake) -->
+  <!-- Leaf 1 -->
+  <ellipse cx="243" cy="215" rx="19" ry="11" fill="#1c5824" transform="rotate(-38,243,215)"/>
+  <ellipse cx="242" cy="214" rx="19" ry="11" fill="#267030" transform="rotate(-38,242,214)"/>
+  <line x1="233" y1="221" x2="252" y2="208" stroke="#144820" stroke-width="1.8" opacity="0.85"/>
+  <!-- Leaf veins -->
+  <line x1="238" y1="218" x2="247" y2="212" stroke="#1e6028" stroke-width="0.8" opacity="0.6"/>
+  <!-- Leaf 2 -->
+  <ellipse cx="306" cy="268" rx="17" ry="10" fill="#1c5824" transform="rotate(22,306,268)"/>
+  <ellipse cx="305" cy="267" rx="17" ry="10" fill="#267030" transform="rotate(22,305,267)"/>
+  <line x1="297" y1="272" x2="314" y2="263" stroke="#144820" stroke-width="1.5" opacity="0.85"/>
+  <!-- Leaf 3 -->
+  <ellipse cx="196" cy="280" rx="16" ry="9" fill="#1c5824" transform="rotate(-18,196,280)"/>
+  <ellipse cx="195" cy="279" rx="16" ry="9" fill="#267030" transform="rotate(-18,195,279)"/>
+  <line x1="188" y1="284" x2="204" y2="275" stroke="#144820" stroke-width="1.4" opacity="0.85"/>
+  <!-- Leaf 4 (partial, under cheese) -->
+  <ellipse cx="268" cy="332" rx="15" ry="8" fill="#267030" opacity="0.75" transform="rotate(32,268,332)"/>
+  <!-- Leaf 5 (small) -->
+  <ellipse cx="220" cy="340" rx="12" ry="7" fill="#267030" opacity="0.8" transform="rotate(-25,220,340)"/>
+
+  <!-- OLIVE OIL sheen -->
+  <path d="M 215 238 Q 246 220 278 240 Q 308 258 295 292" fill="none" stroke="rgba(200,165,40,0.28)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M 186 270 Q 202 255 220 272" fill="none" stroke="rgba(200,165,40,0.22)" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Parmigiano shavings -->
+  <ellipse cx="268" cy="248" rx="11" ry="5" fill="#f8f0d8" opacity="0.82" transform="rotate(-18,268,248)"/>
+  <ellipse cx="228" cy="300" rx="9" ry="4" fill="#f4ecd2" opacity="0.78" transform="rotate(22,228,300)"/>
+  <ellipse cx="302" cy="226" rx="8" ry="3.5" fill="#f8f0d8" opacity="0.75" transform="rotate(-10,302,226)"/>
+
+  <!-- Oven blisters on sauce (charred bubbles) -->
+  <circle cx="224" cy="208" r="6" fill="#140804" opacity="0.55"/>
+  <circle cx="295" cy="198" r="5" fill="#140804" opacity="0.5"/>
+  <circle cx="316" cy="348" r="5.5" fill="#140804" opacity="0.5"/>
+  <circle cx="200" cy="344" r="5" fill="#140804" opacity="0.48"/>
+  <circle cx="356" cy="266" r="5" fill="#140804" opacity="0.5"/>
+
+  <!-- Flour dust on crust edge (artisanal detail) -->
+  <circle cx="176" cy="102" r="3" fill="rgba(245,240,232,0.22)"/>
+  <circle cx="310" cy="82"  r="2.5" fill="rgba(245,240,232,0.2)"/>
+  <circle cx="414" cy="200" r="3" fill="rgba(245,240,232,0.18)"/>
+  <circle cx="404" cy="320" r="2.5" fill="rgba(245,240,232,0.2)"/>
+  <circle cx="170" cy="398" r="3" fill="rgba(245,240,232,0.22)"/>
+  <circle cx="90"  cy="200" r="2.5" fill="rgba(245,240,232,0.18)"/>
+</svg>

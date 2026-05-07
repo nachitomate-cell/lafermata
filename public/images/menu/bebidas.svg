@@ -1,52 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- Shadow -->
-  <ellipse cx="86" cy="172" rx="28" ry="6" fill="rgba(0,0,0,0.2)"/>
-  <ellipse cx="138" cy="172" rx="18" ry="5" fill="rgba(0,0,0,0.18)"/>
+  <!-- Wine glass shadow -->
+  <ellipse cx="100" cy="175" rx="24" ry="5" fill="rgba(0,0,0,0.4)"/>
 
-  <!-- Wine bottle -->
-  <rect x="74" y="54" width="24" height="112" rx="4" fill="#2a4820"/>
-  <rect x="74" y="54" width="24" height="112" rx="4" fill="none" stroke="#1e3818" stroke-width="1.5"/>
-  <!-- Bottle neck -->
-  <rect x="80" y="30" width="12" height="28" rx="6" fill="#2a4820"/>
-  <rect x="80" y="30" width="12" height="28" rx="6" fill="none" stroke="#1e3818" stroke-width="1"/>
-  <!-- Bottle cap foil -->
-  <rect x="78" y="26" width="16" height="12" rx="3" fill="#c9a84c"/>
-  <rect x="78" y="26" width="16" height="4" rx="2" fill="#e8c860"/>
-  <!-- Cork top -->
-  <rect x="83" y="22" width="6" height="8" rx="2" fill="#d4b888"/>
-  <!-- Label -->
-  <rect x="76" y="90" width="20" height="48" rx="3" fill="#f5f0e0"/>
-  <rect x="76" y="90" width="20" height="48" rx="3" fill="none" stroke="#d8d0c0" stroke-width="1"/>
-  <rect x="78" y="95" width="16" height="2" fill="#c9a84c" rx="1"/>
-  <rect x="78" y="100" width="16" height="1.5" fill="#e8411a" rx="1"/>
-  <rect x="78" y="104" width="16" height="1.5" fill="#e8411a" rx="1"/>
-  <ellipse cx="86" cy="118" rx="6" ry="5" fill="#c9a84c" opacity="0.5"/>
-  <rect x="78" y="126" width="16" height="1.5" fill="#c9a84c" rx="1"/>
-  <rect x="78" y="130" width="16" height="1.5" fill="#c9a84c" rx="1"/>
-  <!-- Bottle shine -->
-  <line x1="80" y1="40" x2="80" y2="155" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-linecap="round"/>
-
-  <!-- Wine glass -->
-  <!-- Glass stem -->
-  <rect x="133" y="130" width="6" height="38" rx="3" fill="#e0dcd4" opacity="0.75"/>
+  <!-- Wine glass stem -->
+  <rect x="97" y="140" width="6" height="30" rx="2" fill="rgba(245,240,232,0.18)"/>
   <!-- Base -->
-  <ellipse cx="136" cy="168" rx="18" ry="5" fill="#d8d4cc" opacity="0.8"/>
-  <ellipse cx="136" cy="167" rx="18" ry="5" fill="#e8e4dc" opacity="0.7"/>
-  <!-- Glass bowl -->
-  <path d="M 112 50 Q 108 90 118 118 Q 124 132 136 132 Q 148 132 154 118 Q 164 90 160 50 Z" fill="rgba(220,216,208,0.35)"/>
-  <path d="M 112 50 Q 108 90 118 118 Q 124 132 136 132 Q 148 132 154 118 Q 164 90 160 50 Z" fill="none" stroke="#d0ccc4" stroke-width="1.5"/>
-  <!-- Wine fill -->
-  <path d="M 116 90 Q 114 110 118 118 Q 124 132 136 132 Q 148 132 154 118 Q 158 110 156 90 Z" fill="#722040" opacity="0.85"/>
-  <path d="M 116 90 Q 136 84 156 90" fill="#8a2850" opacity="0.6"/>
+  <ellipse cx="100" cy="170" rx="22" ry="5" fill="rgba(245,240,232,0.12)" stroke="rgba(245,240,232,0.2)" stroke-width="1"/>
+
+  <!-- Wine glass bowl -->
+  <path d="M 64 42 Q 56 95 68 118 Q 80 138 100 140 Q 120 138 132 118 Q 144 95 136 42 Z"
+        fill="rgba(255,255,255,0.08)" stroke="rgba(245,240,232,0.22)" stroke-width="1.5"/>
+
+  <!-- Red wine fill (Chianti-style deep red) -->
+  <clipPath id="wine-clip">
+    <path d="M 64 42 Q 56 95 68 118 Q 80 138 100 140 Q 120 138 132 118 Q 144 95 136 42 Z"/>
+  </clipPath>
+  <rect x="55" y="95" width="90" height="52" fill="#6a1020" clip-path="url(#wine-clip)"/>
+  <rect x="55" y="93" width="90" height="10" fill="#8a1828" opacity="0.8" clip-path="url(#wine-clip)"/>
   <!-- Wine surface -->
-  <ellipse cx="136" cy="90" rx="20" ry="5" fill="#9a3060" opacity="0.7"/>
-  <ellipse cx="132" cy="88" rx="8" ry="3" fill="rgba(255,255,255,0.1)"/>
-  <!-- Glass rim -->
-  <path d="M 112 50 Q 136 44 160 50" fill="none" stroke="#d8d4cc" stroke-width="2" opacity="0.8"/>
-  <!-- Glass shine -->
-  <path d="M 116 60 Q 114 90 118 112" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3" stroke-linecap="round"/>
-  <!-- Bubbles in wine -->
-  <circle cx="130" cy="110" r="1.5" fill="rgba(255,200,200,0.4)"/>
-  <circle cx="140" cy="105" r="1.2" fill="rgba(255,200,200,0.35)"/>
-  <circle cx="134" cy="118" r="1" fill="rgba(255,200,200,0.3)"/>
+  <ellipse cx="100" cy="96" rx="42" ry="8" fill="#9a2030" clip-path="url(#wine-clip)"/>
+  <ellipse cx="100" cy="94" rx="38" ry="6" fill="#b02838" opacity="0.7" clip-path="url(#wine-clip)"/>
+
+  <!-- Wine meniscus (curve at edges) -->
+  <path d="M 68 96 Q 100 90 132 96" fill="none" stroke="rgba(180,50,60,0.5)" stroke-width="2"/>
+
+  <!-- Glass reflection (left) -->
+  <path d="M 67 50 Q 63 80 68 108" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Glass reflection (right thin) -->
+  <path d="M 128 55 Q 131 80 130 102" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Wine legs running down glass -->
+  <path d="M 72 100 Q 71 116 74 128" fill="none" stroke="rgba(150,30,40,0.35)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 80 98 Q 78 114 80 126" fill="none" stroke="rgba(150,30,40,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Grape cluster accent (bottom left, decorative) -->
+  <circle cx="42" cy="148" r="7"   fill="#6a1878" opacity="0.75"/>
+  <circle cx="52" cy="144" r="6.5" fill="#7a1e88" opacity="0.7"/>
+  <circle cx="44" cy="138" r="6"   fill="#6a1878" opacity="0.72"/>
+  <circle cx="54" cy="135" r="5.5" fill="#7a1e88" opacity="0.68"/>
+  <circle cx="48" cy="130" r="5"   fill="#6a1878" opacity="0.7"/>
+  <!-- Grape tendril -->
+  <path d="M 52 128 Q 56 122 60 118" fill="none" stroke="#4a1050" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Leaf -->
+  <ellipse cx="64" cy="115" rx="8" ry="5" fill="#228030" opacity="0.8" transform="rotate(20,64,115)"/>
+
+  <!-- Bottle label accent (top right) -->
+  <rect x="140" y="50" width="24" height="32" rx="3" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.35)" stroke-width="1"/>
+  <line x1="143" y1="60" x2="161" y2="60" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+  <line x1="143" y1="66" x2="161" y2="66" stroke="rgba(201,168,76,0.3)" stroke-width="0.8"/>
+  <circle cx="152" cy="56" r="3" fill="rgba(201,168,76,0.5)"/>
 </svg>
