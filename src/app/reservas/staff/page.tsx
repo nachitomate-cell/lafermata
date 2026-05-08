@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { subscribeByFecha, actualizarStatus } from '@/lib/reservas';
 import type { Reserva, ReservaStatus } from '@/lib/reservas';
@@ -210,6 +210,10 @@ export default function ReservasStaffPage() {
   const [processing, setProcessing] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<ReservaStatus | 'todas'>('todas');
 
+  // Keep a ref so handleAction always sees fresh reserva data without being recreated
+  const reservasRef = useRef<Reserva[]>([]);
+  useEffect(() => { reservasRef.current = reservas; }, [reservas]);
+
   useEffect(() => {
     if (!unlocked) return;
     const unsub = subscribeByFecha(fecha, setReservas);
@@ -218,7 +222,27 @@ export default function ReservasStaffPage() {
 
   const handleAction = useCallback(async (id: string, status: ReservaStatus) => {
     setProcessing(id);
-    try { await actualizarStatus(id, status); }
+    try {
+      await actualizarStatus(id, status);
+      if (status === 'confirmada') {
+        const r = reservasRef.current.find(x => x.id === id);
+        if (r) {
+          fetch('/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type:     'reserva_confirmada',
+              id,
+              nombre:   r.nombre,
+              telefono: r.telefono,
+              fecha:    r.fecha,
+              hora:     r.hora,
+              personas: r.personas,
+            }),
+          }).catch(() => {});
+        }
+      }
+    }
     catch { alert('Error al actualizar la reserva.'); }
     finally { setProcessing(null); }
   }, []);
@@ -247,7 +271,7 @@ export default function ReservasStaffPage() {
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="sticky top-0 z-20 px-4 py-4 flex items-center justify-between"
         style={{ background: 'rgba(12,11,9,0.95)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
-        <Link href="/reservas" style={{ color: 'var(--muted)', fontSize: '1.4rem' }}>←</Link>
+        <Link href="/admin" style={{ color: 'var(--muted)', fontSize: '1.4rem' }}>←</Link>
         <div className="text-center">
           <p className="text-sm font-black" style={{ color: 'var(--cream)' }}>Panel Reservas</p>
           <p className="text-xs" style={{ color: 'var(--fire)' }}>🔥 La Fermata</p>
@@ -344,16 +368,18 @@ export default function ReservasStaffPage() {
 
         {/* ── Lista de reservas ────────────────────────────── */}
         {filtered.length === 0 ? (
-          <div className="rounded-3xl border-2 border-dashed py-16 text-center space-y-3"
-            style={{ borderColor: 'var(--border)' }}>
-            <div className="text-4xl">📅</div>
+          <div className="rounded-3xl py-14 px-6 text-center space-y-3"
+            style={{ background: 'var(--surface)', border: '1px dashed var(--border)' }}>
+            <div className="text-4xl">{reservas.length === 0 ? '📭' : '🔍'}</div>
             <p className="font-bold" style={{ color: 'var(--cream)' }}>
               {reservas.length === 0
                 ? `Sin reservas para ${formatDateLabel(fecha).toLowerCase()}`
                 : 'Sin reservas en este filtro'}
             </p>
             <p className="text-sm" style={{ color: 'var(--muted)' }}>
-              Las solicitudes aparecen aquí en tiempo real.
+              {reservas.length === 0
+                ? 'Las solicitudes de clientes desde la app aparecen aquí en tiempo real.'
+                : 'Prueba seleccionando "Todas" o cambiando la fecha.'}
             </p>
           </div>
         ) : (

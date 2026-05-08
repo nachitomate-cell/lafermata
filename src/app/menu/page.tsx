@@ -43,16 +43,20 @@ export default function MenuPage() {
             <button
               key={cat.id}
               onClick={() => selectCategory(cat.id)}
-              className="shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all"
+              className="shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition-all duration-200"
               style={{
-                background: active ? 'rgba(232,65,26,0.15)' : 'var(--surface2)',
-                border: `1.5px solid ${active ? 'var(--fire)' : 'var(--border)'}`,
+                background: active ? 'rgba(232,65,26,0.15)' : 'rgba(255,255,255,0.04)',
+                border: `1.5px solid ${active ? 'var(--fire)' : 'rgba(255,255,255,0.09)'}`,
                 minWidth: '68px',
               }}
             >
               <div
                 className="relative rounded-xl overflow-hidden"
-                style={{ width: 44, height: 44, background: active ? 'rgba(232,65,26,0.1)' : 'var(--surface)' }}
+                style={{
+                  width: 44,
+                  height: 44,
+                  background: active ? 'rgba(232,65,26,0.12)' : 'rgba(255,255,255,0.07)',
+                }}
               >
                 <Image
                   src={cat.image}
@@ -64,7 +68,7 @@ export default function MenuPage() {
               </div>
               <span
                 className="text-xs font-semibold leading-tight text-center"
-                style={{ color: active ? 'var(--fire)' : 'var(--muted)', maxWidth: 64 }}
+                style={{ color: active ? 'var(--fire)' : 'rgba(245,240,232,0.6)', maxWidth: 64 }}
               >
                 {cat.label}
               </span>

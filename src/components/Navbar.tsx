@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/context/CartContext';
 
+const HIDDEN_PATHS = ['/order/', '/admin/orders', '/cocina'];
+
 export default function Navbar() {
   const { count, setIsOpen } = useCart();
   const pathname = usePathname();
@@ -20,6 +22,9 @@ export default function Navbar() {
     }
     prevCount.current = count;
   }, [count]);
+
+  // All hooks done — safe to return null conditionally now
+  if (HIDDEN_PATHS.some(p => pathname.startsWith(p))) return null;
 
   const links = [
     { href: '/', label: 'Inicio' },

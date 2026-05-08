@@ -1,10 +1,16 @@
 import {
   collection, doc, addDoc, updateDoc, getDocs,
-  query, where, limit, onSnapshot, orderBy,
+  query, where, limit, onSnapshot,
 } from 'firebase/firestore';
 import { db } from './firebase';
 
-export type PedidoStatus = 'pending' | 'en_preparacion' | 'en_horno' | 'lista' | 'entregado';
+export type PedidoStatus =
+  | 'pending'
+  | 'nuevo'
+  | 'en_preparacion'
+  | 'en_horno'
+  | 'lista'
+  | 'entregado';
 
 export interface PedidoItem {
   nombre: string;
@@ -19,22 +25,49 @@ export interface Pedido {
   amount: number;
   status: PedidoStatus;
   authCode?: string;
+  clientUid?: string;
+  clientName?: string;
+  paymentMethod?: 'webpay' | 'efectivo';
   creadoEn: string;
   actualizadoEn?: string;
+  confirmedAt?: string;
 }
 
 export async function crearPedidoPendiente(
   buyOrder: string,
   items: PedidoItem[],
   amount: number,
+  clientUid?: string,
 ): Promise<void> {
   await addDoc(collection(db, 'fermata_pedidos'), {
     buyOrder,
     items,
     amount,
     status: 'pending',
+    clientUid: clientUid ?? '',
+    paymentMethod: 'webpay',
     creadoEn: new Date().toISOString(),
   });
+}
+
+export async function crearPedidoDirecto(
+  buyOrder: string,
+  items: PedidoItem[],
+  amount: number,
+  clientUid: string,
+  clientName?: string,
+): Promise<string> {
+  const ref = await addDoc(collection(db, 'fermata_pedidos'), {
+    buyOrder,
+    items,
+    amount,
+    status: 'nuevo',
+    clientUid,
+    clientName: clientName?.trim() ?? '',
+    paymentMethod: 'efectivo',
+    creadoEn: new Date().toISOString(),
+  });
+  return ref.id;
 }
 
 export async function confirmarPedido(buyOrder: string, authCode: string): Promise<void> {
@@ -80,6 +113,18 @@ export function subscribeKitchen(cb: (pedidos: Pedido[]) => void): () => void {
   const q = query(
     collection(db, 'fermata_pedidos'),
     where('status', 'in', ['en_preparacion', 'en_horno', 'lista']),
+  );
+  return onSnapshot(q, snap => {
+    const list = snap.docs.map(d => ({ id: d.id, ...d.data() } as Pedido));
+    list.sort((a, b) => a.creadoEn.localeCompare(b.creadoEn));
+    cb(list);
+  });
+}
+
+export function subscribeOrders(cb: (pedidos: Pedido[]) => void): () => void {
+  const q = query(
+    collection(db, 'fermata_pedidos'),
+    where('status', 'in', ['nuevo', 'en_preparacion', 'en_horno', 'lista']),
   );
   return onSnapshot(q, snap => {
     const list = snap.docs.map(d => ({ id: d.id, ...d.data() } as Pedido));

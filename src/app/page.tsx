@@ -51,12 +51,20 @@ export default function HomePage() {
             className="object-cover object-top"
             priority
           />
-          {/* Overlay degradado: más oscuro arriba y abajo para legibilidad */}
+          {/* Capa 1: degradado vertical base */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to bottom, rgba(12,11,9,0.72) 0%, rgba(12,11,9,0.38) 45%, rgba(12,11,9,0.82) 100%)',
+                'linear-gradient(to bottom, rgba(12,11,9,0.82) 0%, rgba(12,11,9,0.62) 42%, rgba(12,11,9,0.92) 100%)',
+            }}
+          />
+          {/* Capa 2: viñeta radial centrada en el texto para máximo contraste */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 70% 50% at 50% 52%, rgba(12,11,9,0.55) 0%, transparent 100%)',
             }}
           />
         </div>

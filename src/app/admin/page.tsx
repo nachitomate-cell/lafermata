@@ -14,6 +14,7 @@ const TOTAL_MESAS = 16;
 interface Stats {
   reservas:      { pendientes: number; confirmadas: number; llegaron: number; canceladas: number };
   cocina:        { en_preparacion: number; en_horno: number; lista: number };
+  pedidosNuevos: number;
   mesas:         { libre: number; ocupada: number; reservada: number };
   pendingStamps: number;
 }
@@ -22,6 +23,7 @@ function emptyStats(): Stats {
   return {
     reservas:      { pendientes: 0, confirmadas: 0, llegaron: 0, canceladas: 0 },
     cocina:        { en_preparacion: 0, en_horno: 0, lista: 0 },
+    pedidosNuevos: 0,
     mesas:         { libre: TOTAL_MESAS, ocupada: 0, reservada: 0 },
     pendingStamps: 0,
   };
@@ -55,11 +57,12 @@ function useLiveStats(active: boolean) {
     );
 
     const unsubCocina = onSnapshot(
-      query(collection(db, 'fermata_pedidos'), where('status', 'in', ['en_preparacion', 'en_horno', 'lista'])),
+      query(collection(db, 'fermata_pedidos'), where('status', 'in', ['nuevo', 'en_preparacion', 'en_horno', 'lista'])),
       snap => {
         const docs = snap.docs.map(d => d.data());
         setStats(s => ({
           ...s,
+          pedidosNuevos: docs.filter(d => d.status === 'nuevo').length,
           cocina: {
             en_preparacion: docs.filter(d => d.status === 'en_preparacion').length,
             en_horno:       docs.filter(d => d.status === 'en_horno').length,
@@ -330,7 +333,25 @@ export default function AdminPage() {
   const cocinaTotal   = stats.cocina.en_preparacion + stats.cocina.en_horno + stats.cocina.lista;
   const today = new Date().toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
+  const totalPedidosActivos = stats.pedidosNuevos + stats.cocina.en_preparacion + stats.cocina.en_horno + stats.cocina.lista;
+
   const sections: SectionCardProps[] = [
+    {
+      icon: '📋',
+      title: 'Pedidos',
+      subtitle: 'Kanban · gestión y chat en tiempo real',
+      href: '/admin/orders',
+      accentColor: '#e8411a',
+      badge: stats.pedidosNuevos,
+      alert: stats.pedidosNuevos > 0
+        ? `${stats.pedidosNuevos} pedido${stats.pedidosNuevos > 1 ? 's' : ''} nuevo${stats.pedidosNuevos > 1 ? 's' : ''} sin atender`
+        : undefined,
+      chips: [
+        { value: stats.pedidosNuevos,                                        label: 'Nuevos',    color: '#c9a84c' },
+        { value: stats.cocina.en_preparacion + stats.cocina.en_horno,        label: 'Cocinando', color: '#f59e0b' },
+        { value: stats.cocina.lista,                                          label: 'Listos',    color: '#4ade80' },
+      ],
+    },
     {
       icon: '📅',
       title: 'Reservas',
@@ -427,6 +448,7 @@ export default function AdminPage() {
           <p style={{ color: 'var(--muted)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0 8px 8px' }}>
             Operaciones
           </p>
+          <NavItem icon="📋" label="Pedidos"       href="/admin/orders"         badge={totalPedidosActivos}        color="#e8411a" />
           <NavItem icon="📅" label="Reservas"     href="/reservas/staff"       badge={stats.reservas.pendientes}  color="#f59e0b" />
           <NavItem icon="🍕" label="Cocina"        href="/cocina"               badge={cocinaTotal}                color="#e8411a" />
           <NavItem icon="🪑" label="Mesas"         href="/reservas/staff/mesas"                                              />
@@ -438,12 +460,13 @@ export default function AdminPage() {
             <NavItem icon="📊" label="Métricas"     href="/panel"                                                             />
           </div>
           <div style={{ marginTop: 16 }}>
-            <p style={{ color: 'var(--muted)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0 8px 8px' }}>
-              App
-            </p>
-            <NavItem icon="🏠" label="Inicio"       href="/"                                                                  />
-            <NavItem icon="🍕" label="Carta"        href="/menu"                                                              />
-            <NavItem icon="📅" label="Reservas"     href="/reservas"                                                          />
+            <a href="/" style={{
+              display: 'block', padding: '6px 8px',
+              color: 'var(--muted)', fontSize: 11, textDecoration: 'none',
+              opacity: 0.55,
+            }}>
+              ↗ Ver app pública
+            </a>
           </div>
         </nav>
 

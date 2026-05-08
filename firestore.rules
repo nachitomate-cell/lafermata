@@ -82,5 +82,14 @@ service cloud.firestore {
       allow read, write: if isSignedIn();
     }
 
+    // ── Chat de pedidos ───────────────────────────────────────────────────────
+    // Any authenticated user (incl. anonymous) can send and read messages.
+    // Messages are immutable once created; only staff can delete.
+    match /fermata_chats/{orderId}/messages/{messageId} {
+      allow read, create: if isSignedIn();
+      allow update:       if false;
+      allow delete:       if isStaff();
+    }
+
   }
 }

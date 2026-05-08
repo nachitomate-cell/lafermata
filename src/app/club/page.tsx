@@ -314,6 +314,8 @@ export default function ClubPage() {
   const router = useRouter();
   const [history, setHistory] = useState<LogEntry[]>([]);
   const [celebrating, setCelebrating] = useState(false);
+  const [refLink, setRefLink] = useState('');
+  const [copied, setCopied] = useState(false);
   const prevStampsRef = useRef<number | null>(null);
 
   // Detect real-time stamp increase → trigger pizza rain
@@ -343,6 +345,10 @@ export default function ClubPage() {
     if (!loading && !user) router.replace('/club/unete');
   }, [user, loading, router]);
 
+  useEffect(() => {
+    if (user) setRefLink(`${window.location.origin}/club/unete?ref=${user.uid}`);
+  }, [user]);
+
   if (loading || !user || !userData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -350,6 +356,14 @@ export default function ClubPage() {
           style={{ borderColor: 'var(--fire)', borderTopColor: 'transparent' }} />
       </div>
     );
+  }
+
+  function copyRefLink() {
+    if (!refLink) return;
+    navigator.clipboard.writeText(refLink).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
   }
 
   const tier      = getTier(userData.totalSellosHistoricos);
@@ -520,6 +534,38 @@ export default function ClubPage() {
           )}
         </div>
 
+        {/* ── Referidos ───────────────────────────────────────── */}
+        <div className="rounded-3xl p-5 space-y-3"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--muted)' }}>
+                Invita amigos
+              </p>
+              <p className="text-sm font-black mt-0.5" style={{ color: 'var(--cream)' }}>
+                Gana 2 pedazos por referido
+              </p>
+            </div>
+            <span className="text-3xl shrink-0">🤝</span>
+          </div>
+          <p className="text-xs" style={{ color: 'var(--muted)' }}>
+            Cuando un amigo se registre con tu link y haga su primera visita al local, te acreditamos 2 pedazos de pizza automáticamente.
+          </p>
+          <div className="flex items-center gap-2 rounded-xl px-3 py-2.5"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+            <p className="text-xs font-mono flex-1 truncate" style={{ color: 'var(--muted)' }}>
+              {refLink || '...'}
+            </p>
+            <button
+              onClick={copyRefLink}
+              className="shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg transition-all active:scale-95"
+              style={{ background: copied ? 'rgba(34,197,94,0.2)' : 'var(--fire)', color: copied ? '#22c55e' : '#fff' }}
+            >
+              {copied ? '✅ Copiado' : '📋 Copiar'}
+            </button>
+          </div>
+        </div>
+
         {/* ── Actions ─────────────────────────────────────────── */}
         <div className="grid grid-cols-2 gap-3">
           <Link href="/club/premios"
@@ -550,7 +596,7 @@ export default function ClubPage() {
                 <div key={i} className="flex items-start gap-3 rounded-xl px-3 py-2.5"
                   style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
                   <span className="text-base mt-0.5 shrink-0">
-                    {log.tipo === 'SELLO' ? '🍕' : log.tipo === 'CANJE' ? '🎁' : log.tipo === 'BIENVENIDA' ? '🌱' : '📋'}
+                    {log.tipo === 'SELLO' ? '🍕' : log.tipo === 'CANJE' ? '🎁' : log.tipo === 'BIENVENIDA' ? '🌱' : log.tipo === 'REFERIDO' ? '🤝' : '📋'}
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs" style={{ color: 'var(--cream)' }}>{log.accion}</p>

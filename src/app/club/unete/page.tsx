@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { registrarNuevoMiembro } from '@/lib/puntos';
@@ -17,9 +17,11 @@ function Benefit({ icon, text }: { icon: string; text: string }) {
   );
 }
 
-export default function UnetePage() {
+function UneteContent() {
   const { user, loading, signIn, register } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const refParam = searchParams.get('ref') ?? undefined;
   const [mode, setMode] = useState<Mode>('welcome');
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
@@ -54,7 +56,7 @@ export default function UnetePage() {
     setError('');
     try {
       const newUser = await register(email.trim(), password, nombre.trim());
-      await registrarNuevoMiembro(newUser.uid, nombre.trim(), email.trim(), telefono || undefined, fechaNacimiento || undefined);
+      await registrarNuevoMiembro(newUser.uid, nombre.trim(), email.trim(), telefono || undefined, fechaNacimiento || undefined, refParam);
       router.replace('/club');
     } catch (err: any) {
       setError(
@@ -291,5 +293,13 @@ export default function UnetePage() {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function UnetePage() {
+  return (
+    <Suspense>
+      <UneteContent />
+    </Suspense>
   );
 }

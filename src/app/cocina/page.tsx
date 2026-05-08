@@ -10,17 +10,34 @@ const STAFF_PIN = process.env.NEXT_PUBLIC_STAFF_PIN || '4321';
 
 function formatCLP(n: number) { return '$' + n.toLocaleString('es-CL'); }
 
-function timeElapsed(iso: string): string {
-  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
-  if (s < 60) return `${s}s`;
-  if (s < 3600) return `${Math.floor(s / 60)}m`;
-  return `${Math.floor(s / 3600)}h`;
+function calcElapsed(iso: string): { display: string; minutes: number } {
+  const total = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return { display: `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`, minutes: m };
+}
+
+// ─── Live timer — updates every second ───────────────────────────────────────
+
+function LiveTimer({ isoString }: { isoString: string }) {
+  const [elapsed, setElapsed] = useState(() => calcElapsed(isoString));
+  useEffect(() => {
+    const id = setInterval(() => setElapsed(calcElapsed(isoString)), 1000);
+    return () => clearInterval(id);
+  }, [isoString]);
+  // < 10 min green · 10-20 min amber · > 20 min red
+  const color = elapsed.minutes < 10 ? '#4ade80' : elapsed.minutes < 20 ? '#f59e0b' : '#ef4444';
+  return (
+    <span className="font-mono font-bold tabular-nums text-xs" style={{ color }}>
+      ⏱ {elapsed.display}
+    </span>
+  );
 }
 
 // ─── Status meta ─────────────────────────────────────────────────────────────
 
 const META: Record<
-  Exclude<PedidoStatus, 'pending' | 'entregado'>,
+  Exclude<PedidoStatus, 'pending' | 'nuevo' | 'entregado'>,
   { label: string; color: string; bg: string; border: string; icon: string }
 > = {
   en_preparacion: { label: 'Preparando',  color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.35)', icon: '👨‍🍳' },
@@ -99,7 +116,7 @@ function PedidoCard({
   processing: string | null;
   onAction: (id: string, status: PedidoStatus) => void;
 }) {
-  const status = pedido.status as Exclude<PedidoStatus, 'pending' | 'entregado'>;
+  const status = pedido.status as Exclude<PedidoStatus, 'pending' | 'nuevo' | 'entregado'>;
   const meta = META[status];
   const busy = processing === pedido.id;
 
@@ -108,22 +125,26 @@ function PedidoCard({
       style={{ background: meta.bg, border: `2px solid ${meta.border}` }}>
 
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-2xl">{meta.icon}</span>
           <div>
             <p className="text-xs font-mono font-bold" style={{ color: 'var(--muted)' }}>
               #{pedido.buyOrder.slice(-6).toUpperCase()}
             </p>
-            <p className="text-xs" style={{ color: 'var(--muted)' }}>
-              Hace {timeElapsed(pedido.creadoEn)}
-            </p>
+            <LiveTimer isoString={pedido.creadoEn} />
           </div>
         </div>
-        <span className="text-xs font-black px-2.5 py-1 rounded-full"
-          style={{ background: meta.border, color: meta.color, border: `1px solid ${meta.border}` }}>
-          {meta.label}
-        </span>
+        <div className="flex flex-col items-end gap-1.5 shrink-0">
+          <span className="text-xs font-black px-2.5 py-1 rounded-full"
+            style={{ background: meta.border, color: meta.color, border: `1px solid ${meta.border}` }}>
+            {meta.label}
+          </span>
+          <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
+            style={{ background: 'rgba(96,165,250,0.14)', color: '#60a5fa' }}>
+            🌐 Pedido Web
+          </span>
+        </div>
       </div>
 
       {/* Items */}
@@ -216,7 +237,7 @@ export default function CocinaPage() {
       {/* Header */}
       <div className="sticky top-0 z-20 px-4 py-4 flex items-center justify-between"
         style={{ background: 'rgba(12,11,9,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)' }}>
-        <Link href="/" style={{ color: 'var(--muted)', fontSize: '1.4rem' }}>←</Link>
+        <Link href="/admin" style={{ color: 'var(--muted)', fontSize: '1.4rem' }}>←</Link>
         <div className="text-center">
           <p className="text-sm font-black" style={{ color: 'var(--cream)' }}>Panel Cocina</p>
           <p className="text-xs" style={{ color: 'var(--fire)' }}>🔥 La Fermata</p>
@@ -278,14 +299,16 @@ export default function CocinaPage() {
 
         {/* Order list */}
         {filtered.length === 0 ? (
-          <div className="rounded-3xl border-2 border-dashed py-16 text-center space-y-3"
-            style={{ borderColor: 'var(--border)' }}>
-            <div className="text-4xl">🍕</div>
+          <div className="rounded-3xl py-14 px-6 text-center space-y-3"
+            style={{ background: 'var(--surface)', border: '1px dashed var(--border)' }}>
+            <div className="text-4xl">{pedidos.length === 0 ? '✨' : '🔍'}</div>
             <p className="font-bold" style={{ color: 'var(--cream)' }}>
               {pedidos.length === 0 ? 'Sin pedidos activos' : 'Sin pedidos en este filtro'}
             </p>
             <p className="text-sm" style={{ color: 'var(--muted)' }}>
-              Los pedidos pagados online aparecen aquí en tiempo real.
+              {pedidos.length === 0
+                ? 'Los pedidos online pagados con WebPay aparecen aquí en tiempo real.'
+                : 'Prueba seleccionando "Todos" para ver el estado general.'}
             </p>
           </div>
         ) : (

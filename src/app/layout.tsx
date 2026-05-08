@@ -20,6 +20,8 @@ import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import BottomNav from '@/components/BottomNav';
 import LoadingScreen from '@/components/LoadingScreen';
+import PwaInstallBanner from '@/components/PwaInstallBanner';
+import ActiveOrderBanner from '@/components/ActiveOrderBanner';
 
 export const metadata: Metadata = {
   title: 'La Fermata – Pizzería Napoletana | Viña del Mar',
@@ -57,6 +59,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <main className="flex-1">{children}</main>
           <CartDrawer />
+          <PwaInstallBanner />
+          <ActiveOrderBanner />
           <BottomNav />
           <footer className="py-8 text-center text-sm" style={{ color: 'var(--muted)', borderTop: '1px solid var(--border)' }}>
             <p>La Fermata · Av. Libertad 1040, Viña del Mar</p>

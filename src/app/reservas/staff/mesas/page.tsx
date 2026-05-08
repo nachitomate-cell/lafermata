@@ -86,9 +86,10 @@ function PinScreen({ onSuccess }: { onSuccess: () => void }) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function MesasPage() {
-  const [unlocked, setUnlocked] = useState(() => isStaffSessionValid());
-  const [mesas, setMesas]       = useState<Record<number, Estado>>({});
-  const [updating, setUpdating] = useState<number | null>(null);
+  const [unlocked, setUnlocked]     = useState(() => isStaffSessionValid());
+  const [mesas, setMesas]           = useState<Record<number, Estado>>({});
+  const [updating, setUpdating]     = useState<number | null>(null);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   useEffect(() => {
     if (!unlocked) return;
@@ -125,6 +126,57 @@ export default function MesasPage() {
 
   return (
     <div className="min-h-screen pb-28" style={{ background: 'var(--bg)' }}>
+
+      {/* ── Modal de confirmación ──────────────────────────── */}
+      {confirmReset && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}
+          onClick={() => setConfirmReset(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-3xl p-6 space-y-5"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-center space-y-2">
+              <div className="text-4xl">⚠️</div>
+              <h3 className="text-lg font-black" style={{ color: 'var(--cream)' }}>
+                ¿Liberar todas las mesas?
+              </h3>
+              <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                Se marcarán las {TOTAL} mesas como <strong style={{ color: 'var(--cream)' }}>Libre</strong>.
+                Esta acción no se puede deshacer.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmReset(false)}
+                className="flex-1 py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
+                style={{ background: 'var(--surface2)', color: 'var(--cream)', border: '1px solid var(--border)' }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  setConfirmReset(false);
+                  for (const n of tables) {
+                    if ((mesas[n] ?? 'libre') !== 'libre') {
+                      await setDoc(doc(db, 'fermata_mesas', `mesa_${n}`), {
+                        numero: n, estado: 'libre', updatedAt: new Date().toISOString(),
+                      });
+                    }
+                  }
+                }}
+                className="flex-1 py-3 rounded-xl text-sm font-black transition-all active:scale-95"
+                style={{ background: '#ef4444', color: '#fff' }}
+              >
+                Sí, liberar todas
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <div className="sticky top-0 z-20 px-4 py-4 flex items-center justify-between"
@@ -186,19 +238,11 @@ export default function MesasPage() {
           })}
         </div>
 
-        {/* Reset all */}
+        {/* Reset all — acción destructiva */}
         <button
-          onClick={async () => {
-            for (const n of tables) {
-              if ((mesas[n] ?? 'libre') !== 'libre') {
-                await setDoc(doc(db, 'fermata_mesas', `mesa_${n}`), {
-                  numero: n, estado: 'libre', updatedAt: new Date().toISOString(),
-                });
-              }
-            }
-          }}
+          onClick={() => setConfirmReset(true)}
           className="w-full py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
-          style={{ background: 'var(--surface2)', color: 'var(--muted)', border: '1px solid var(--border)' }}>
+          style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
           🔄 Liberar todas las mesas
         </button>
 

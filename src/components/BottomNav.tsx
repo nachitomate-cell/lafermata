@@ -12,6 +12,8 @@ const links = [
   { href: '/club', label: 'Club', icon: '⭐' },
 ];
 
+const HIDDEN_PATHS = ['/order/', '/admin/orders', '/cocina'];
+
 export default function BottomNav() {
   const pathname = usePathname();
   const { count, setIsOpen } = useCart();
@@ -26,6 +28,9 @@ export default function BottomNav() {
     }
     prevCount.current = count;
   }, [count]);
+
+  // All hooks done — safe to return null conditionally now
+  if (HIDDEN_PATHS.some(p => pathname.startsWith(p))) return null;
 
   return (
     <nav

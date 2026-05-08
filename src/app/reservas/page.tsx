@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, type CSSProperties } from 'react';
 import { crearReserva } from '@/lib/reservas';
 
 const PHONE = '+56941225555';
@@ -75,6 +75,20 @@ export default function ReservasPage() {
         notas:    form.notas.trim(),
       });
       setReservaId(id);
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type:     'reserva_nueva',
+          id,
+          nombre:   form.nombre.trim(),
+          telefono: form.telefono.trim(),
+          fecha:    form.date,
+          hora:     form.time,
+          personas: form.guests,
+          notas:    form.notas.trim(),
+        }),
+      }).catch(() => {});
     } catch {
       setError('No se pudo guardar la reserva. Intenta nuevamente.');
     } finally {
@@ -82,15 +96,12 @@ export default function ReservasPage() {
     }
   }
 
-  const inputStyle = {
-    background: 'var(--surface2)',
-    border: '1px solid var(--border)',
-    color: 'var(--cream)',
-    borderRadius: '12px',
-    padding: '12px 16px',
-    width: '100%',
-    fontSize: '0.875rem',
-    outline: 'none',
+  const selectStyle: CSSProperties = {
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7468' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 14px center',
+    paddingRight: '36px',
+    cursor: 'pointer',
   };
 
   /* ── Pantalla de confirmación ─────────────────────────── */
@@ -178,28 +189,51 @@ export default function ReservasPage() {
           <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>
             Tu nombre
           </label>
-          <input type="text" placeholder="Ej. María González" value={form.nombre}
-            onChange={e => update('nombre', e.target.value)} required style={inputStyle} />
+          <input
+            type="text"
+            placeholder="Ej. María González"
+            value={form.nombre}
+            onChange={e => update('nombre', e.target.value)}
+            required
+            className="form-field"
+          />
         </div>
 
         <div>
           <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>
             Teléfono de contacto
           </label>
-          <input type="tel" placeholder="+56 9 1234 5678" value={form.telefono}
-            onChange={e => update('telefono', e.target.value)} required style={inputStyle} />
+          <input
+            type="tel"
+            placeholder="+56 9 1234 5678"
+            value={form.telefono}
+            onChange={e => update('telefono', e.target.value)}
+            required
+            className="form-field"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>Fecha</label>
-            <input type="date" value={form.date} min={todayMin}
-              onChange={e => update('date', e.target.value)} required style={inputStyle} />
+            <input
+              type="date"
+              value={form.date}
+              min={todayMin}
+              onChange={e => update('date', e.target.value)}
+              required
+              className="form-field"
+            />
           </div>
           <div>
             <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>Hora</label>
-            <select value={form.time} onChange={e => update('time', e.target.value)}
-              required style={{ ...inputStyle, cursor: 'pointer' }}>
+            <select
+              value={form.time}
+              onChange={e => update('time', e.target.value)}
+              required
+              className="form-field"
+              style={selectStyle}
+            >
               <option value="" disabled>Seleccionar</option>
               {times.map(t => <option key={t} value={t}>{t} hrs</option>)}
             </select>
@@ -210,8 +244,12 @@ export default function ReservasPage() {
           <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>
             Número de personas
           </label>
-          <select value={form.guests} onChange={e => update('guests', e.target.value)}
-            style={{ ...inputStyle, cursor: 'pointer' }}>
+          <select
+            value={form.guests}
+            onChange={e => update('guests', e.target.value)}
+            className="form-field"
+            style={selectStyle}
+          >
             {[1,2,3,4,5,6,7,8,9,10].map(n => (
               <option key={n} value={n}>{n} persona{n !== 1 ? 's' : ''}</option>
             ))}
@@ -222,16 +260,30 @@ export default function ReservasPage() {
           <label className="block text-sm mb-2 font-medium" style={{ color: 'var(--muted)' }}>
             Notas (opcional)
           </label>
-          <textarea placeholder="Alergias, ocasión especial, preferencias de mesa..."
-            value={form.notas} onChange={e => update('notas', e.target.value)}
-            rows={3} style={{ ...inputStyle, resize: 'none' }} />
+          <textarea
+            placeholder="Alergias, ocasión especial, preferencias de mesa..."
+            value={form.notas}
+            onChange={e => update('notas', e.target.value)}
+            rows={3}
+            className="form-field"
+            style={{ resize: 'none' }}
+          />
         </div>
 
         {error && <p className="text-xs text-center" style={{ color: '#ef4444' }}>{error}</p>}
 
-        <button type="submit" disabled={!isValid || loading}
-          className="w-full py-4 rounded-xl font-bold text-sm transition-all active:scale-95 disabled:opacity-40"
-          style={{ background: 'var(--fire)', color: '#fff' }}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-4 rounded-xl font-bold text-sm transition-all active:scale-95"
+          style={{
+            background: 'var(--fire)',
+            color: '#fff',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.8 : 1,
+            transition: 'opacity 0.2s ease, transform 0.15s ease',
+          }}
+        >
           {loading ? 'Guardando reserva…' : 'Solicitar Reserva →'}
         </button>
       </form>

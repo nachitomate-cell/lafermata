@@ -54,7 +54,7 @@ const ANIMATIONS = `
 // ─── Status configs ───────────────────────────────────────────────────────────
 
 const STATUS_CONFIG: Record<
-  Exclude<PedidoStatus, 'pending' | 'entregado'>,
+  Exclude<PedidoStatus, 'pending' | 'nuevo' | 'entregado'>,
   { title: string; subtitle: string; color: string; bg: string; border: string }
 > = {
   en_preparacion: {
@@ -204,7 +204,7 @@ function OrderTracker({ buyOrder, authCode }: { buyOrder: string; authCode: stri
     return subscribePedidoByOrder(buyOrder, setPedido);
   }, [buyOrder, authCode]);
 
-  const status = (pedido?.status ?? 'en_preparacion') as Exclude<PedidoStatus, 'pending' | 'entregado'>;
+  const status = (pedido?.status ?? 'en_preparacion') as Exclude<PedidoStatus, 'pending' | 'nuevo' | 'entregado'>;
   const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.en_preparacion;
 
   return (

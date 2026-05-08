@@ -53,6 +53,7 @@ export interface UserClubData {
   createdAt: string;
   rol: "cliente" | "staff";
   flavorProfile?: Partial<Record<"pomodoro"|"crema"|"pesto"|"mar"|"fungi"|"carne"|"dolce", number>>;
+  referidoPor?: string;         // userId del miembro que lo invitó
 }
 
 export interface Premio {
@@ -88,14 +89,15 @@ export async function registrarNuevoMiembro(
   nombre: string,
   correo: string,
   telefono?: string,
-  fechaNacimiento?: string
+  fechaNacimiento?: string,
+  referidoPor?: string,
 ): Promise<void> {
   const userRef = doc(db, "fermata_usuarios", userId);
   const snap = await getDoc(userRef);
   if (snap.exists()) return; // ya registrado
 
   const timestamp = new Date().toISOString();
-  await setDoc(userRef, {
+  const data: Record<string, unknown> = {
     nombre,
     correo,
     telefono: telefono || undefined,
@@ -107,7 +109,10 @@ export async function registrarNuevoMiembro(
     baneado: false,
     createdAt: timestamp,
     rol: "cliente",
-  } satisfies Omit<UserClubData, "id">);
+  };
+  if (referidoPor) data.referidoPor = referidoPor;
+
+  await setDoc(userRef, data);
 
   // Log de bienvenida
   await addDoc(collection(db, "fermata_logs"), {
@@ -116,6 +121,30 @@ export async function registrarNuevoMiembro(
     accion: `Se unió al club y recibió ${WELCOME_STAMPS} sello de bienvenida`,
     fecha: timestamp,
     tipo: "BIENVENIDA",
+  }).catch(() => {});
+}
+
+async function otorgarBonoReferido(referidorId: string, nuevoMiembroNombre: string): Promise<void> {
+  const userRef = doc(db, "fermata_usuarios", referidorId);
+  const BONO = 2;
+
+  await runTransaction(db, async (transaction) => {
+    const snap = await transaction.get(userRef);
+    if (!snap.exists() || snap.data().baneado) return;
+    const currentSellos = snap.data().sellos ?? 0;
+    transaction.update(userRef, {
+      sellos: increment(BONO),
+      totalSellosHistoricos: increment(BONO),
+      recompensaDisponible: currentSellos + BONO >= STAMPS_PER_REWARD,
+      lastPurchaseAt: new Date().toISOString(),
+    });
+  });
+
+  addDoc(collection(db, "fermata_logs"), {
+    usuarioId: referidorId,
+    accion: `+2 sellos de bono por referido — ${nuevoMiembroNombre} hizo su primera visita`,
+    fecha: new Date().toISOString(),
+    tipo: "REFERIDO",
   }).catch(() => {});
 }
 
@@ -174,6 +203,7 @@ export async function confirmarHandshake(
     const nuevoTotal = currentSellos + 1;
     const totalHistorico = userSnap.exists() ? (userSnap.data().totalSellosHistoricos || 0) + 1 : 1;
     const realName = (userSnap.exists() ? userSnap.data().nombre : null) || userName || "Miembro";
+    const referidoPor = userSnap.exists() ? (userSnap.data().referidoPor as string | undefined) : undefined;
 
     transaction.update(pendingRef, {
       status: "confirmed",
@@ -202,7 +232,7 @@ export async function confirmarHandshake(
       });
     }
 
-    return { userId, userName: realName, nuevoTotal, totalHistorico };
+    return { userId, userName: realName, nuevoTotal, totalHistorico, referidoPor };
   });
 
   // Logs no críticos
@@ -214,6 +244,11 @@ export async function confirmarHandshake(
     tipo: "SELLO",
     metodo: "HANDSHAKE",
   }).catch(() => {});
+
+  // Bono referido: se acredita al referidor cuando el invitado hace su primera visita
+  if (result.totalHistorico === 2 && result.referidoPor) {
+    otorgarBonoReferido(result.referidoPor, result.userName).catch(() => {});
+  }
 
   return result;
 }
