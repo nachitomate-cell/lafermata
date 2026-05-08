@@ -502,6 +502,17 @@ export default function AdminOrdersPage() {
       await actualizarStatusPedido(pedido.id, nextStatus);
       if (nextStatus === 'lista') {
         await sendMessage(pedido.id, AUTO_MSG_LISTO, 'system');
+        if (pedido.pushSubscription) {
+          fetch('/api/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'pedido_listo',
+              subscription: pedido.pushSubscription,
+              buyOrder: pedido.buyOrder,
+            }),
+          }).catch(() => {});
+        }
       }
     },
     [],

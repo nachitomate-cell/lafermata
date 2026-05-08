@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
+import webpush from 'web-push';
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID   = process.env.TELEGRAM_STAFF_CHAT_ID;
+
+if (process.env.VAPID_PRIVATE_KEY && process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT ?? 'mailto:info@lafermata.cl',
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY,
+  );
+}
 
 const TWILIO_SID   = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_TOKEN = process.env.TWILIO_AUTH_TOKEN;
@@ -86,6 +95,22 @@ export async function POST(req: NextRequest) {
         `${lines}\n` +
         `💰 Total: $${Number(amount).toLocaleString('es-CL')}`,
       );
+    }
+    if (type === 'pedido_listo') {
+      const { subscription, buyOrder } = body as {
+        subscription: PushSubscriptionJSON;
+        buyOrder: string;
+      };
+      if (subscription?.endpoint) {
+        await webpush.sendNotification(
+          subscription as webpush.PushSubscription,
+          JSON.stringify({
+            title: '🎉 ¡Tu pedido está listo!',
+            body: 'Pasa a retirarlo en Av. Libertad 1040, Viña del Mar',
+            url: `/order/${buyOrder}`,
+          }),
+        );
+      }
     }
   } catch {
     // Notifications are best-effort

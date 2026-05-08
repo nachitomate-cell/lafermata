@@ -28,6 +28,7 @@ export interface Pedido {
   clientUid?: string;
   clientName?: string;
   paymentMethod?: 'webpay' | 'efectivo';
+  pushSubscription?: PushSubscriptionJSON;
   creadoEn: string;
   actualizadoEn?: string;
   confirmedAt?: string;
@@ -119,6 +120,17 @@ export function subscribeKitchen(cb: (pedidos: Pedido[]) => void): () => void {
     list.sort((a, b) => a.creadoEn.localeCompare(b.creadoEn));
     cb(list);
   });
+}
+
+export async function savePushSubscription(
+  buyOrder: string,
+  subscription: PushSubscription,
+): Promise<void> {
+  const snap = await getDocs(
+    query(collection(db, 'fermata_pedidos'), where('buyOrder', '==', buyOrder), limit(1)),
+  );
+  if (snap.empty) return;
+  await updateDoc(snap.docs[0].ref, { pushSubscription: subscription.toJSON() });
 }
 
 export function subscribeOrders(cb: (pedidos: Pedido[]) => void): () => void {

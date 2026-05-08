@@ -53,7 +53,7 @@ export default function ActiveOrderBanner() {
 
   return (
     // Sits above BottomNav on mobile (60px), floating bottom-right on desktop
-    <div className="fixed bottom-[68px] sm:bottom-5 left-0 right-0 sm:left-auto sm:right-4 z-40 flex justify-center sm:justify-end px-3 sm:px-0 pointer-events-none">
+    <div className="above-bottom-nav fixed left-0 right-0 sm:left-auto sm:right-4 z-40 flex justify-center sm:justify-end px-3 sm:px-0 pointer-events-none">
       <div
         className="pointer-events-auto flex items-center gap-3 rounded-2xl px-4 py-3 shadow-2xl anim-fade-in-up"
         style={{

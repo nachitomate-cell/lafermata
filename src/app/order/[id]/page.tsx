@@ -5,7 +5,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signInAnonymously } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { subscribePedidoByOrder, confirmarPedido } from '@/lib/pedidos';
+import { subscribePedidoByOrder, confirmarPedido, savePushSubscription } from '@/lib/pedidos';
 import type { Pedido, PedidoStatus } from '@/lib/pedidos';
 import { subscribeChat, sendMessage } from '@/lib/chat';
 import type { ChatMessage } from '@/lib/chat';
@@ -120,9 +120,22 @@ function OrderContent() {
   }, [messages]);
 
   async function handleEnableNotifs() {
-    if (typeof Notification === 'undefined') return;
+    if (typeof Notification === 'undefined' || !('serviceWorker' in navigator)) return;
     const perm = await Notification.requestPermission();
     setNotifPermission(perm);
+    if (perm !== 'granted' || !id) return;
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      const existing = await reg.pushManager.getSubscription();
+      const sub = existing ?? await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+      });
+      await savePushSubscription(id, sub);
+    } catch {
+      // push subscription failed — in-page notification still works
+    }
   }
 
   function handleDismissNotifs() {
