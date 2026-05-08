@@ -112,6 +112,24 @@ export async function POST(req: NextRequest) {
         );
       }
     }
+
+    if (type === 'mensaje_staff') {
+      const { subscription, buyOrder, text } = body as {
+        subscription: PushSubscriptionJSON;
+        buyOrder: string;
+        text: string;
+      };
+      if (subscription?.endpoint) {
+        await webpush.sendNotification(
+          subscription as webpush.PushSubscription,
+          JSON.stringify({
+            title: '💬 La Fermata',
+            body: text,
+            url: `/order/${buyOrder}`,
+          }),
+        );
+      }
+    }
   } catch {
     // Notifications are best-effort
   }

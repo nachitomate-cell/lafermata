@@ -220,6 +220,18 @@ function ChatPanel({ pedido, onClose }: { pedido: Pedido; onClose: () => void })
     setInput('');
     try {
       await sendMessage(pedido.id, text.trim(), 'staff');
+      if (pedido.pushSubscription) {
+        fetch('/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'mensaje_staff',
+            subscription: pedido.pushSubscription,
+            buyOrder: pedido.buyOrder,
+            text: text.trim(),
+          }),
+        }).catch(() => {});
+      }
     } finally {
       setSending(false);
     }
